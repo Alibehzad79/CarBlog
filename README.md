@@ -15,7 +15,7 @@ cd CarBlog/CarBlog
   <li>pip install -r requirements.txt</li>
   <li>python manage.py migrate</li>
   <li>python manage.py collectstatic</li>
-  <li>python manage.py createsuperuser</li> ::: # for login
+  <li>python manage.py createsuperuser  ::: # for login</li>
   <li>python manage.py runserver 8000</li>
 </ol>
 --------------------------------------<br />
