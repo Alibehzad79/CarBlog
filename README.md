@@ -7,7 +7,7 @@ open Terminal in Linux and mac , cmd in windows
 pip install virtualenv <br />
 mkdir CarBlog <br />
 --> virtualenv venv <br />
---------------------------------------<br />
+--------------------------------------
 <h6>clone CarBlog to CarBlog folder in your pc</h6>
 cd CarBlog/CarBlog
 <br />
