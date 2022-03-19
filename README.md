@@ -22,5 +22,6 @@ cd CarBlog/CarBlog
 Django Admin Panel:> 127.0.0.1/admin/ ::: #login required!
 <br />
 Custom Dashboard(admin panel):> 127.0.0.1/accounts/dashboard/ ::: #login required!
+<br />
 --------------------------------------<br>
 Enjoy ❤️😍
