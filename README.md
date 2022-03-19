@@ -1,24 +1,19 @@
 # CarBlog
-The Blog with django
-
+<h1>The Blog with django</h1>
+--------------------------------------
 open Terminal in Linux and mac , cmd in windows
 
-<h2>Install Virtualenv</h2>
+<h6>Install Virtualenv</h6>
 pip install virtualenv <br />
 mkdir CarBlog <br />
 --> virtualenv venv <br />
-
-<h2>clone CarBlog to CarBlog folder in your pc</h2> <br />
-
-------------------------------------
-
+--------------------------------------
+<h6>clone CarBlog to CarBlog folder in your pc</h6> <br />
 cd CarBlog/CarBlog
 <br />
 1.python manage.py migrate <br />
 2.python manage.py collectstatic <br />
 3.python manage.py createsuperuser <br />
 4.python manage.py runserver 8000 <br />
-
 --------------------------------------
-
 Enjoy ❤️😍
