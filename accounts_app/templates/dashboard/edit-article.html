@@ -1,0 +1,125 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block title %}
+    ویرایش پست
+{% endblock %}
+{% block head_css %}
+{% endblock %}
+{% block head_script %}
+    <script src="{% static 'tinymce/tinymce.min.js' %}" referrerpolicy="origin"></script>
+{% endblock %}
+{% block content %}
+    <div class="content-wrapper" style="min-height: 1222px;">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>{{ article.title }}</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="/">خانه</a></li>
+                            <li class="breadcrumb-item active">ویرایش پست</li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="form-control">
+                        <div class="form-group">
+                            <form role="form" method="post" enctype="multipart/form-data"
+                                  action="{% url 'edit-article' article.id %}">
+                                {% csrf_token %}                                <!-- text input -->
+                                <div class="form-group">
+                                    <label for="creator">نویسنده</label>
+                                    <input type="text" id="creator" disabled class="form-control"
+                                            {% if article.creator.get_full_name %}
+                                           value="{{ article.creator.get_full_name }}"
+                                            {% else %}
+                                           value="{{ article.creator }}"
+                                            {% endif %}>
+                                </div>
+                                <div class="form-group">
+                                    <label for="date-created">تاریخ ایجاد</label>
+                                    <input type="text" id="date-created" disabled class="form-control"
+                                           value="{{ article.date_created.year }}/{{ article.date_created.month }}/{{ article.date_created.day }}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="date-update">تاریخ آخرین بروزرسانی</label>
+                                    <input type="text" id="date-update" disabled class="form-control"
+                                           value="{{ article.date_update.year }}/{{ article.date_update.month }}/{{ article.date_update.day }}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+                                    {{ form.title }}
+                                </div>
+                                <!-- textarea -->
+                                <div class="form-group">
+                                    <label for="{{ form.content.id_for_label }}">{{ form.content.label }}</label>
+                                    {{ form.content }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ form.image.id_for_label }}">{{ form.image.label }}</label>
+                                    {{ form.image }}
+                                    <p class="mt-1">{{ form.image.help_text }}</p>
+                                </div>
+
+                                <!-- input states -->
+                                <div class="form-group has-success">
+                                    <label class="control-label" for="{{ form.video_url.id_for_label }}"><i
+                                            class="fa fa-link px-1"></i>{{ form.video_url.label }}</label>
+                                    {{ form.video_url }}
+                                </div>
+                                <div class="form-group has-warning">
+                                    <label class="control-label" for="{{ form.category.id_for_label }}"><i
+                                            class="fa fa-caret-left"></i> {{ form.category.label }} <a
+                                            class="btn btn-primary" href="{% url 'create-category' %}">ایجاد</a></label>
+                                    {{ form.category }}
+                                </div>
+                                <div class="form-group has-error">
+                                    <label class="control-label" for="{{ form.tag.id_for_label }}"><i
+                                            class="fa fa-caret-left"></i> {{ form.tag.label }} <a
+                                            class="btn btn-primary" href="{% url 'create-tag' %}">ایجاد</a></label>
+                                    {{ form.tag }}
+                                    <p class="mt-1">{{ form.tag.help_text }}</p>
+                                </div>
+
+                                <!-- checkbox -->
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <label class="control-label" for="{{ form.status.id_for_label }}"><i
+                                                class="fa fa-caret-left"></i> {{ form.status.label }}</label>
+                                        {{ form.status }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input class="btn btn-success" type="submit" value="ذخیره">
+                                </div>
+                            </form>
+                        </div>
+                        <!-- /.mail-box-messages -->
+                    </div>
+                </div>
+
+
+                <!-- /. box -->
+            </div>
+            <!-- /.col -->
+        </section>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        tinymce.init({
+            selector: '#id_content'
+        });
+    </script>
+
+{% endblock %}

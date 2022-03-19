@@ -1,0 +1,99 @@
+
+/*----- 13. Testimonial style  ------*/
+
+.single-testimonial {
+    img {
+        
+    }
+    p{
+        line-height: 32px;
+        color: #575757;
+        font-size: 16px;
+        font-weight: 500;
+        margin: 32px 0 0px;
+        font-style: italic;
+        @media #{$xs-layout}{
+            font-size: 15px;
+        } 
+    }
+    .client-info {
+        margin: 20px 0 0;
+        i {
+            font-size: 26px;
+            color: #666666;
+        }
+        h5 {
+            font-size: 14px;
+            color: #010101;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin: 22px 0 3px;
+        }
+        span {
+            font-size: 14px;
+            color: #010101;
+            letter-spacing: 1.5px;
+        }
+    }
+}
+
+.testimonial-active {
+    &.owl-carousel {
+        .owl-item {
+            img {
+                display: inline-block;
+                width: auto;
+            }
+        }
+    }
+}
+
+.testimonial-area {
+    &:hover .nav-style-1.owl-carousel > .owl-nav div {
+        opacity: 1;
+        visibility: visible;
+    }
+    &.ml-70 {
+        @media #{$xl-layout}{
+            margin-left: 15px;
+        } 
+        @media #{$lg-layout}{
+            margin-left: 30px;
+        } 
+        @media #{$md-layout}{
+            margin-left: 40px;
+        }  
+        @media #{$xs-layout}{
+            margin-left: 15px;
+        }  
+        @media #{$sm-layout}{
+            margin-left: 30px;
+        } 
+    }
+    &.mr-70 {
+        @media #{$xl-layout}{
+            margin-right: 15px;
+        } 
+        @media #{$lg-layout}{
+            margin-right: 30px;
+        } 
+        @media #{$md-layout}{
+            margin-right: 40px;
+        }  
+        @media #{$xs-layout}{
+            margin-right: 15px;
+        } 
+        @media #{$sm-layout}{
+            margin-right: 30px;
+        } 
+    }
+}
+
+
+
+
+
+
+
+
+

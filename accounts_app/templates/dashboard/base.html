@@ -1,0 +1,55 @@
+{% if request.user.is_superuser %}
+    {% load static %}
+    {% load render_partial %}
+    <!DOCTYPE html>
+    <html lang="fa">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>
+            {% block title %}
+
+            {% endblock %}
+        </title>
+        <!-- Tell the browser to be responsive to screen width -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% block head_css %}
+
+        {% endblock %}
+        {% block head_script %}
+
+        {% endblock %}
+        <!-- Font Awesome -->
+        {% include 'dashboard/header_referenced.html' %}
+    </head>
+    <body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+
+        <!-- Navbar -->
+        {% render_partial 'accounts_app.views.dashboard_header' %}
+        <!-- /.navbar -->
+
+        <!-- Main Sidebar Container -->
+        {% render_partial 'accounts_app.views.admin_sidebar' %}
+
+        <!-- Content Wrapper. Contains page content -->
+        {% block content %}
+
+        {% endblock %}
+        <!-- /.content-wrapper -->
+        {% render_partial 'accounts_app.views.dashboard_footer' %}
+
+        <!-- Control Sidebar -->
+
+        <!-- /.control-sidebar -->
+    </div>
+    <!-- ./wrapper -->
+
+    {% include 'dashboard/footer_referenced.html' %}
+    {% block script %}
+
+    {% endblock %}
+    </body>
+    </html>
+
+{% endif %}

@@ -1,0 +1,96 @@
+{% extends 'dashboard/base.html' %}
+{% block head_css %}
+
+{% endblock %}
+{% block head_script %}
+
+{% endblock %}
+{% block title %}
+    لیست پست های پیشنهادی مدیر
+{% endblock %}
+{% block content %}
+    {% if request.user.is_superuser %}
+        <div class="content-wrapper" style="min-height: 1222px;">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>دسته بندی ها</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-left">
+                                <li class="breadcrumb-item"><a href="/">خانه</a></li>
+                                <li class="breadcrumb-item active"> لیست پست های پیشنهادی مدیر</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div><!-- /.container-fluid -->
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title"> لیست پست های پیشنهادی مدیر<span><a
+                                            href="{% url 'create-suggestion-post' %}"><button
+                                            class="btn btn-primary mx-2">ایجاد </button></a></span></h3>
+                                </div>
+                                <!-- /.card-header -->
+                                {% if suggestion_post_list %}
+                                    <div class="card-body">
+                                        <table class="table table-bordered">
+                                            <tbody>
+                                            <tr class="text-center">
+                                                <th>ID</th>
+                                                <th>نام پست</th>
+                                                <th>اسلاگ</th>
+                                            </tr>
+
+                                            {% for suggestion_post in suggestion_post_list %}
+                                                <tr class="text-center">
+                                                    <td>{{ suggestion_post.id }}</td>
+
+                                                    <td>
+                                                        <a href="{% url 'delete-suggestion-post' suggestion_post.article.id %}"><i
+                                                                class="mx-2 fa fa-remove text-danger"></i></a>
+                                                        <a href="{% url 'blog:article_detail' suggestion_post.article.id suggestion_post.article.get_slug_title %}">{{ suggestion_post.article.title }}</a>
+                                                    </td>
+                                                    <td>
+                                                        {{ suggestion_post.article.get_slug_title }}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                {% else %}
+                                    <p class="alert alert-warning text-center">هیچ پستی تعریف نشده</p>
+                                {% endif %}
+                                <!-- /.card-body -->
+                                <div class="card-footer clearfix">
+                                    <ul class="pagination pagination-sm m-0 float-right">
+                                        <li class="page-item"></li>
+
+
+                                        <li class="page-item"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+        </div>
+
+    {% endif %}
+{% endblock %}
+{% block script %}
+
+{% endblock %}

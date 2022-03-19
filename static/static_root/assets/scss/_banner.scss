@@ -1,0 +1,288 @@
+
+/*----- 9. Banner style  -------*/
+
+.single-banner {
+    position: relative;
+    overflow: hidden;
+    a {
+        img {
+            width: 100%;
+            transform: scale(1);
+            transition: all .5s ease 0s;
+        }
+    }
+    &:hover img {
+        transform: scale(1.2);
+    }
+    .banner-content {
+        position: absolute;
+        content: "";
+        left: 36px;
+        top: 40px;
+        @media #{$lg-layout}{
+            left: 20px;
+            top: 20px;
+        }
+        @media #{$md-layout}{
+            left: 15px;
+            top: 10px;
+        }
+        @media #{$xs-layout}{
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        h3{
+            font-size: 36px;
+            color: #915342;
+            font-weight: 600;
+            margin: 0;
+            font-family: 'Cormorant Garamond';
+            @media #{$md-layout}{
+                font-size: 27px;
+            }
+            @media #{$xs-layout}{
+                font-size: 30px;
+            }
+        }
+        h4{
+            font-size: 18px;
+            color: #010101;
+            margin: 3px 0 58px;
+            font-weight: 600;
+            font-family: 'Cormorant Garamond';
+            @media #{$lg-layout}{
+                margin: 3px 0 25px;
+            }
+            @media #{$lg-layout}{
+                margin: 3px 0 15px;
+            }
+            @media #{$md-layout}{
+                margin: 3px 0 8px;
+            }
+            @media #{$xs-layout}{
+                margin: 3px 0 30px;
+            }
+            span {
+                color: #935644;
+                font-size: 20px;
+                margin: 0 0px 0 2px;
+                display: inline-block;
+                line-height: 1;
+                position: relative;
+                top: 2px;
+            }
+        }
+        a{
+            width: 28px;
+            height: 28px;
+            border-radius: 100%;
+            border: 2px solid #97584a;
+            color: #97584a;
+            font-size: 14px;
+            display: inline-block;
+            text-align: center;
+            i{
+                line-height: 25px;
+            }
+            &:hover {
+                color: $theme-color;
+                border: 2px solid $theme-color;
+            }
+        }
+    }
+}
+
+/* banner hm4 */
+
+.banner-area-2 {
+    .container-fluid {
+        padding-right: 10px;
+        padding-left: 10px;
+        @media #{$md-layout}{
+            padding-right: 30px;
+            padding-left: 30px;
+        }
+        @media #{$xs-layout}{
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+    }
+    &.pb-85 {
+        @media #{$xs-layout}{
+            padding-bottom: 42px;
+        }
+    }
+    &.banner-area-2 {
+        .single-banner {
+            @media #{$xx-layout}{
+                .banner-content {
+                    top: 15px;
+                    left: 15px;
+                    h3 {
+                        font-size: 25px;
+                    } 
+                    h4 {
+                        margin: 3px 0 10px;
+                    } 
+                }
+            }
+            @media #{$xl-layout}{
+                .banner-content {
+                    top: 15px;
+                    left: 15px;
+                    h3 {
+                        font-size: 25px;
+                    } 
+                    h4 {
+                        margin: 3px 0 10px;
+                    } 
+                }
+            }
+            @media #{$md-layout}{
+                .banner-content {
+                    top: 25px;
+                    h3 {
+                        font-size: 30px;
+                    } 
+                    h4 {
+                        margin: 3px 0 40px;
+                    } 
+                }
+            }
+        }
+        @media #{$md-layout}{
+            &.pt-10 {
+                padding-top: 30px
+            }
+        }
+    }
+}
+
+/* banner hm9 */
+
+.single-banner-2 {
+    position: relative;
+    overflow: hidden;
+    a{
+        img {
+            width: 100%;
+            transform: scale(1);
+            transition: all .5s ease 0s;
+        }
+    }
+    .banner-content-2 {
+        position: absolute;
+        left: 40px;
+        top: 50%;
+        transform: translateY(-50%);
+        @media #{$xs-layout}{
+            left: 20px;
+        }
+        h3 {
+            font-size: 48px;
+            color: #915342;
+            margin: 0;
+            font-family: 'Cormorant Garamond';
+            @media #{$md-layout}{
+                font-size: 35px;
+            }
+            @media #{$xs-layout}{
+                font-size: 33px;
+            }
+        }
+        h4 {
+            font-size: 24px;
+            color: #010101;
+            font-weight: 500;
+            font-family: 'Cormorant Garamond';
+            margin: 22px 0 94px;
+            @media #{$lg-layout}{
+                margin: 22px 0 34px;
+            }
+            @media #{$md-layout}{
+                margin: 15px 0 25px;
+            }
+            @media #{$xs-layout}{
+                margin: 10px 0 20px;
+            }
+            span {
+                color: #935644;
+            }
+        }
+        a {
+            width: 28px;
+            height: 28px;
+            border-radius: 100%;
+            border: 2px solid #97584a;
+            color: #97584a;
+            font-size: 14px;
+            display: inline-block;
+            text-align: center;
+            &:hover {
+                color: #000;
+                border: 2px solid #000;
+            }
+        }
+    }
+    &:hover a img {
+        transform: scale(1.1);
+    }
+}
+
+
+@media #{$xs-layout}{
+    .banner-area.pt-80 {
+        padding-top: 60px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

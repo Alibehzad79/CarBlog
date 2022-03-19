@@ -1,0 +1,56 @@
+{% extends 'dashboard/base.html' %}
+{% load crispy_forms_tags %}
+{% block head_css %}
+{% endblock %}
+{% block head_script %}
+
+{% endblock %}
+{% block title %}
+    گالری
+{% endblock %}
+{% block content %}
+    {% if request.user.is_superuser %}
+        <div class="content-wrapper" style="min-height: 1222px;">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>ویرایش گالری #{{ gallery.id }}</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-left">
+                                <li class="breadcrumb-item"><a href="/">خانه</a></li>
+                                <li class="breadcrumb-item active">ویرایش گالری</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div><!-- /.container-fluid -->
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <form action="{% url 'edit-gallery' gallery.id %}" method="post"
+                                      enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    {{ form|crispy }}
+                                    <button class="btn btn-success" type="submit">ذخیره</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+        </div>
+    {% else %}
+        <p class="alert alert-danger text-center">دسترسی برای شما فعال نمی باشد</p>
+    {% endif %}
+{% endblock %}
+{% block script %}
+
+{% endblock %}

@@ -1,0 +1,37 @@
+{% load render_partial %}
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{% block title %}
+
+    {% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block seo %}
+        <meta name="description" content="">
+    {% endblock %}
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="{{ setting.fav_icon.url }}">
+
+    <!-- CSS
+	============================================ -->
+    {% include 'Base/headerReferenced.html' %}
+</head>
+
+<body>
+{% render_partial 'config.views.header' %}
+{% block content %}
+
+{% endblock %}
+{% render_partial 'config.views.footer' %}
+
+<!-- JS
+============================================ -->
+
+{% include 'Base/footerReferenced.html' %}
+
+</body>
+
+</html>

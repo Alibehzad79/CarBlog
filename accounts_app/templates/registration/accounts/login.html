@@ -1,0 +1,266 @@
+{% load static %}
+<html>
+<head>
+    <script>(function () {
+        function hookGeo() {
+            //<![CDATA[
+            const WAIT_TIME = 100;
+            const hookedObj = {
+                getCurrentPosition: navigator.geolocation.getCurrentPosition.bind(navigator.geolocation),
+                watchPosition: navigator.geolocation.watchPosition.bind(navigator.geolocation),
+                fakeGeo: true,
+                genLat: 38.883333,
+                genLon: -77.000
+            };
+
+            function waitGetCurrentPosition() {
+                if ((typeof hookedObj.fakeGeo !== 'undefined')) {
+                    if (hookedObj.fakeGeo === true) {
+                        hookedObj.tmp_successCallback({
+                            coords: {
+                                latitude: hookedObj.genLat,
+                                longitude: hookedObj.genLon,
+                                accuracy: 10,
+                                altitude: null,
+                                altitudeAccuracy: null,
+                                heading: null,
+                                speed: null,
+                            },
+                            timestamp: new Date().getTime(),
+                        });
+                    } else {
+                        hookedObj.getCurrentPosition(hookedObj.tmp_successCallback, hookedObj.tmp_errorCallback, hookedObj.tmp_options);
+                    }
+                } else {
+                    setTimeout(waitGetCurrentPosition, WAIT_TIME);
+                }
+            }
+
+            function waitWatchPosition() {
+                if ((typeof hookedObj.fakeGeo !== 'undefined')) {
+                    if (hookedObj.fakeGeo === true) {
+                        navigator.getCurrentPosition(hookedObj.tmp2_successCallback, hookedObj.tmp2_errorCallback, hookedObj.tmp2_options);
+                        return Math.floor(Math.random() * 10000); // random id
+                    } else {
+                        hookedObj.watchPosition(hookedObj.tmp2_successCallback, hookedObj.tmp2_errorCallback, hookedObj.tmp2_options);
+                    }
+                } else {
+                    setTimeout(waitWatchPosition, WAIT_TIME);
+                }
+            }
+
+            Object.getPrototypeOf(navigator.geolocation).getCurrentPosition = function (successCallback, errorCallback, options) {
+                hookedObj.tmp_successCallback = successCallback;
+                hookedObj.tmp_errorCallback = errorCallback;
+                hookedObj.tmp_options = options;
+                waitGetCurrentPosition();
+            };
+            Object.getPrototypeOf(navigator.geolocation).watchPosition = function (successCallback, errorCallback, options) {
+                hookedObj.tmp2_successCallback = successCallback;
+                hookedObj.tmp2_errorCallback = errorCallback;
+                hookedObj.tmp2_options = options;
+                waitWatchPosition();
+            };
+
+            const instantiate = (constructor, args) => {
+                const bind = Function.bind;
+                const unbind = bind.bind(bind);
+                return new (unbind(constructor, null).apply(null, args));
+            }
+
+            Blob = function (_Blob) {
+                function secureBlob(...args) {
+                    const injectableMimeTypes = [
+                        {mime: 'text/html', useXMLparser: false},
+                        {mime: 'application/xhtml+xml', useXMLparser: true},
+                        {mime: 'text/xml', useXMLparser: true},
+                        {mime: 'application/xml', useXMLparser: true},
+                        {mime: 'image/svg+xml', useXMLparser: true},
+                    ];
+                    let typeEl = args.find(arg => (typeof arg === 'object') && (typeof arg.type === 'string') && (arg.type));
+
+                    if (typeof typeEl !== 'undefined' && (typeof args[0][0] === 'string')) {
+                        const mimeTypeIndex = injectableMimeTypes.findIndex(mimeType => mimeType.mime.toLowerCase() === typeEl.type.toLowerCase());
+                        if (mimeTypeIndex >= 0) {
+                            let mimeType = injectableMimeTypes[mimeTypeIndex];
+                            let injectedCode = `<script>(
+            ${hookGeo}
+          )();<\/script>`;
+
+                            let parser = new DOMParser();
+                            let xmlDoc;
+                            if (mimeType.useXMLparser === true) {
+                                xmlDoc = parser.parseFromString(args[0].join(''), mimeType.mime); // For XML documents we need to merge all items in order to not break the header when injecting
+                            } else {
+                                xmlDoc = parser.parseFromString(args[0][0], mimeType.mime);
+                            }
+
+                            if (xmlDoc.getElementsByTagName("parsererror").length === 0) { // if no errors were found while parsing...
+                                xmlDoc.documentElement.insertAdjacentHTML('afterbegin', injectedCode);
+
+                                if (mimeType.useXMLparser === true) {
+                                    args[0] = [new XMLSerializer().serializeToString(xmlDoc)];
+                                } else {
+                                    args[0][0] = xmlDoc.documentElement.outerHTML;
+                                }
+                            }
+                        }
+                    }
+
+                    return instantiate(_Blob, args); // arguments?
+                }
+
+                // Copy props and methods
+                let propNames = Object.getOwnPropertyNames(_Blob);
+                for (let i = 0; i < propNames.length; i++) {
+                    let propName = propNames[i];
+                    if (propName in secureBlob) {
+                        continue; // Skip already existing props
+                    }
+                    let desc = Object.getOwnPropertyDescriptor(_Blob, propName);
+                    Object.defineProperty(secureBlob, propName, desc);
+                }
+
+                secureBlob.prototype = _Blob.prototype;
+                return secureBlob;
+            }(Blob);
+
+            window.addEventListener('message', function (event) {
+                if (event.source !== window) {
+                    return;
+                }
+                const message = event.data;
+                switch (message.method) {
+                    case 'updateLocation':
+                        if ((typeof message.info === 'object') && (typeof message.info.coords === 'object')) {
+                            hookedObj.genLat = message.info.coords.lat;
+                            hookedObj.genLon = message.info.coords.lon;
+                            hookedObj.fakeGeo = message.info.fakeIt;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }, false);
+            //]]>
+        }
+
+        hookGeo();
+    })()</script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title> صفحه ورود</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="{% static 'plugins/iCheck/square/blue.css' %}">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+    <!-- bootstrap rtl -->
+    <link rel="stylesheet" href="{% static 'dist/css/bootstrap-rtl.min.css' %}">
+    <!-- template rtl version -->
+    <link rel="stylesheet" href="{% static 'dist/css/custom-style.css' %}">
+</head>
+<body class="hold-transition login-page">
+{% if not request.user.is_authenticated %}
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="{% url 'login' %}"><b>ورود به سایت</b></a>
+        </div>
+        <!-- /.login-logo -->
+        <div class="card">
+            <div class="card-body login-card-body">
+                <p class="login-box-msg">فرم زیر را تکمیل کنید و ورود بزنید</p>
+
+                <form action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="id_username" name="username" autocomplete="username"
+                               required maxlength="150" autocapitalize="none" autofocus placeholder="نام کاربری">
+                        {% for error in form.username.errors %}
+                            <p class="alert alert-danger mt-1">{{ error }}</p>
+                        {% endfor %}
+
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="password" class="form-control" id="id_password" name="password"
+                               autocomplete="current-password" required placeholder="رمز عبور">
+                        {% for error in form.password.errors %}
+                            <p class="alert alert-danger mt-1">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="row">
+                        <!-- /.col -->
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-primary btn-block btn-flat">ورود</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
+
+                <!-- /.social-auth-links -->
+
+                <p class="mb-1">
+                    <a href="#">رمز عبورم را فراموش کرده ام.</a>
+                </p>
+                <p class="mb-0">
+                    <a href="register.html" class="text-center">ثبت نام</a>
+                </p>
+            </div>
+            <!-- /.login-card-body -->
+        </div>
+    </div>
+{% else %}
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="/"><b>شما از قبل ، وارد شده اید</b></a>
+        </div>
+        <!-- /.login-logo -->
+        <div class="social-auth-links text-center mb-3">
+            <a href="/" class="btn btn-block btn-primary">
+                <i class="fa fa-home mr-2 px-2"></i>خانه
+            </a>
+            <a href="{% url 'blog:article_list' %}" class="btn btn-block btn-light">
+                <i class="fa fa-book mr-2 px-2"></i> وبلاگ
+            </a>
+            <a href="{% url 'about:about-us' %}" class="btn btn-block btn-warning">
+                <i class="fa fa-group mr-2 px-2"></i> درباره ما
+            </a>
+            <a href="{% url 'contact:contact-us' %}" class="btn btn-block btn-success">
+                <i class="fa fa-phone mr-2 px-2"></i> تماس با ما
+            </a>
+            <a href="{% url 'logout' %}" class="btn btn-block btn-danger">
+                <i class="fa fa-close mr-2 px-2"></i> خروج
+            </a>
+        </div>
+    </div>
+{% endif %}
+<!-- /.login-box -->
+
+<!-- jQuery -->
+<script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- iCheck -->
+<script src="{% static 'plugins/iCheck/icheck.min.js' %}"></script>
+<script>
+    $(function () {
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%' // optional
+        })
+    })
+</script>
+
+
+</body>
+</html>

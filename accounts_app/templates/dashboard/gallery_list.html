@@ -1,0 +1,81 @@
+{% extends 'dashboard/base.html' %}
+{% block head_css %}
+{% endblock %}
+{% block head_script %}
+
+{% endblock %}
+{% block title %}
+    گالری
+{% endblock %}
+{% block content %}
+    {% if request.user.is_superuser %}
+        <div class="content-wrapper" style="min-height: 1222px;">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>گالری</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-left">
+                                <li class="breadcrumb-item"><a href="/">خانه</a></li>
+                                <li class="breadcrumb-item active">گالری لیست</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div><!-- /.container-fluid -->
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">گالری<span><a class="mx-2" href="{% url 'create-gallery' %}"><button
+                                            class="btn btn-primary">ایجاد گالری جدید </button></a></span></h3>
+                                </div>
+                                <!-- /.card-header -->
+                                {% if galleries %}
+                                    <div class="card-body">
+                                        <table class="table table-bordered">
+                                            <tbody>
+                                            <th class="text-center">ویرایش</th>
+                                            <th class="text-center">پست</th>
+                                            <th class="text-center">حذف</th>
+                                            {% for gallery in galleries %}
+                                                <tr class="text-center">
+                                                    <td><a href="{% url 'edit-gallery' gallery.id %}"
+                                                           class="text-success"><i
+                                                            class="mx-2 fa fa-edit"></i></a></td>
+                                                    <td>
+                                                        <a target="_blank"
+                                                           href="{% url 'blog:article_detail' gallery.article.id gallery.article.get_slug_title %}">{{ gallery.article.title }}</a>
+                                                    </td>
+                                                    <td><a href="{% url 'remove-gallery' gallery.id %}"
+                                                           class="text-danger"><i
+                                                            class="mx-2 fa fa-remove"></i></a></td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                {% else %}
+                                    <p class="alert alert-warning text-center">گالری موجود نیست</p>
+                                {% endif %}
+                                <!-- /.card-body -->
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+        </div>
+    {% else %}
+        <p class="alert alert-danger text-center">دسترسی برای شما فعال نمی باشد</p>
+    {% endif %}
+{% endblock %}
+{% block script %}
+{% endblock %}

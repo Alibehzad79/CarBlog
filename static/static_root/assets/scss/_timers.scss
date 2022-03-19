@@ -1,0 +1,109 @@
+/*------ 15. Timer style  -----*/
+
+.funfact-area.bg-img {
+    position: relative;
+    @media #{$md-layout}{
+        background-position: 15%;
+        &:before {
+            content: "";
+            background-color: #fff;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            position: absolute;
+            opacity: .7;
+        }
+    }
+    @media #{$xs-layout}{
+        background-position: 15%;
+        &:before {
+            content: "";
+            background-color: #fff;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            position: absolute;
+            opacity: .7;
+        }
+    }
+	
+}
+
+.funfact-content {
+    h2 {
+        font-size: 48px;
+        color: #010101;
+        margin: 0;
+        @media #{$xs-layout}{
+            font-size: 32px;
+        }
+    }
+    .timer {
+        text-align: center;
+        margin: 65px 0 0;
+        @media #{$lg-layout}{
+            margin: 44px 0 0;
+        }
+        @media #{$xs-layout}{
+            margin: 24px 0 0;
+        }
+        span {
+            display: inline-block;
+            font-size: 48px;
+            color: #555;
+            font-weight: 300;
+            margin: 0 32px;
+            @media #{$lg-layout}{
+                margin: 0 15px;
+                font-size: 40px;
+            }
+            @media #{$xs-layout}{
+                margin: 0 5px;
+                font-size: 22px;
+            }
+            p{
+                font-size: 18px;
+                font-weight: 500;
+                color: #555;
+                text-transform: uppercase;
+                margin: 34px 0 0;
+                @media #{$lg-layout}{
+                    margin: 24px 0 0;
+                }
+                @media #{$xs-layout}{
+                    margin: 12px 0 0;
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+    .funfact-btn {
+        margin-top: 43px;
+        @media #{$xs-layout}{
+            margin-top: 23px;
+        }
+        a {
+            display: inline-block;
+            background-color: #000;
+            color: #fff;
+            line-height: 1;
+            padding: 16px 56px;
+            border: 1px solid transparent;
+            z-index: 1;
+            &:hover {
+                border: 1px solid $theme-color;
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+

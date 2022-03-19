@@ -1,0 +1,80 @@
+/*------- 14. Brand logo style  -------*/
+
+.brand-logo-active {
+    &.owl-carousel {
+        .owl-item {
+            img {
+                display: inline-block;
+                width: auto;
+            }
+        }
+    }
+    .single-brand-logo {
+        text-align: center;
+        img {
+            filter: grayscale(100%);
+            transition: all .5s ease 0s;
+        }
+        &:hover img {
+            filter: grayscale(0%);
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

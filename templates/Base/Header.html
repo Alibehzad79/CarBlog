@@ -1,0 +1,58 @@
+<header class="header-area header-padding-1 sticky-bar header-res-padding clearfix">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-2 col-lg-2 col-md-6 col-4">
+                <div class="logo">
+                    <a href="/">
+                        <img alt="" src="assets/img/logo/logo.png">
+                    </a>
+                </div>
+            </div>
+            <div class="col-xl-8 col-lg-8 d-none d-lg-block">
+                <div class="main-menu">
+                    <nav>
+                        <ul dir="rtl">
+                            <li><a href="/">خانه </a>
+                            </li>
+                            <li><a href="{% url 'blog:article_list' %}">وبلاگ </a>
+                            </li>
+                            <li><a href="{% url 'about:about-us' %}"> درباره ما </a></li>
+                            <li><a href="{% url 'contact:contact-us' %}"> تماس با ما</a></li>
+                            {% if request.user.is_authenticated %}
+                                <li><a href="{% url 'dashboard' %}"> پنل ادمین</a></li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="col-xl-2 col-lg-2 col-md-6 col-8 text-right">
+                <div class="header-right-wrap">
+                    <div class="same-style header-search">
+                        <a class="search-active" href="#"><i class="pe-7s-search"></i></a>
+                        <div class="search-content">
+                            <form action="{% url 'blog:search' %}">
+                                <input type="text" name="query" value="{{ request.GET.query }}"
+                                       placeholder="...جستوجو کنید"/>
+                                <button class="button-search"><i class="pe-7s-search"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mobile-menu-area">
+        <div class="mobile-menu">
+            <nav id="mobile-menu-active">
+                <ul class="menu-overflow">
+                    <li><a href="/">خانه</a>
+                    </li>
+                    <li><a href="{% url 'blog:article_list' %}">وبلاگ</a>
+                    </li>
+                    <li><a href="{% url 'about:about-us' %}">درباره ما</a></li>
+                    <li><a href="{% url 'contact:contact-us' %}">تماس با ما</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>

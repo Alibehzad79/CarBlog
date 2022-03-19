@@ -1,0 +1,519 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}
+    ویرایش اطلاعات کاربر
+{% endblock %}
+{% block content %}
+    {% if request.user.is_superuser %}
+        <div class="content-wrapper" style="min-height: 1165px;">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>پروفایل</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-left">
+                                <li class="breadcrumb-item"><a href="/">خانه</a></li>
+                                <li class="breadcrumb-item active">پروفایل کاربری</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div><!-- /.container-fluid -->
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-3">
+
+                            <!-- Profile Image -->
+                            <div class="card card-primary card-outline">
+                                <div class="card-body box-profile">
+                                    <div class="text-center">
+                                        {% if customuser.photo %}
+                                            <img class="profile-user-img img-fluid img-circle"
+                                                 src="{{ customuser.photo.url }}" alt="User profile picture">
+                                        {% else %}
+                                            <img class="profile-user-img img-fluid img-circle"
+                                                 src="https://www.shareicon.net/data/512x512/2015/09/18/103159_user_512x512.png"
+                                                 alt="User profile picture">
+                                        {% endif %}
+                                    </div>
+
+                                    {% if customuser.get_full_name %}
+                                        <h3 class="profile-username text-center">{{ customuser.get_full_name }}</h3>
+                                    {% else %}
+                                        <h3 class="profile-username text-center">{{ customuser.username }}</h3>
+                                    {% endif %}
+
+                                    {% if customuser.is_superuser %}
+                                        <p class="text-muted text-center">ادمین اصلی سایت</p>
+                                    {% elif customuser.is_staff %}
+                                        <p class="text-muted text-center">کارمند سایت</p>
+                                    {% elif customuser.is_active %}
+                                        <p class="text-muted text-center">عضو سایت</p>
+                                    {% else %}
+                                        <p class="text-muted text-center">کاربر غیرفعال</p>
+                                    {% endif %}
+
+                                    <ul class="list-group list-group-unbordered mb-3">
+                                        <li class="list-group-item">
+                                            <b>نام کاربری</b> <a class="float-left">{{ customuser.username }}</a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>تعداد پست ها</b> <a
+                                                class="float-left">{{ customuser.article_set.count }}</a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>تعداد بازدید پست ها</b> <a class="float-left">{{ visit_count }}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+
+                            <!-- About Me Box -->
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">درباره من</h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body">
+                                    <strong ز class="d-block"><i class="fa fa-book mr-1"></i> تحصیلات</strong>
+
+                                    {% if customuser.education %}
+                                        <p class="text-muted">
+                                            {{ customuser.education }}
+                                            {% else %}
+                                            تعریف نشده
+                                        </p>
+                                    {% endif %}
+
+                                    <hr>
+
+                                    <strong class="d-block"><i class="fa fa-map-marker mr-1"></i> موقعیت</strong>
+
+                                    {% if customuser.location %}
+                                        <p class="text-muted">
+                                            {{ customuser.location }}
+                                            {% else %}
+                                            تعریف نشده
+                                        </p>
+                                    {% endif %}
+
+                                    <hr>
+
+                                    <strong class="d-block"><i class="fa fa-pencil mr-1"></i> مهارت‌ها</strong>
+
+                                    {% if customuser.skill_set.exists %}
+                                        {% for skill in customuser.skill_set.all %}
+                                            {% if skill.id|divisibleby:2 %}
+                                                <p class="text-muted d-inline-flex">
+                                                    <a href="{% url 'delete-skill' customuser.id skill.id %}"
+                                                       data-toggle="tooltip" title="حذف کردن"><span
+                                                            class="badge badge-info">{{ skill.skill }} <i
+                                                            class="fa fa-close text-danger"></i></span></a>
+                                                </p>
+                                            {% else %}
+                                                <p class="text-muted d-inline-flex">
+                                                    <a href="{% url 'delete-skill' customuser.id skill.id %}"
+                                                       data-toggle="tooltip" title="حذف کردن"> <span
+                                                            class="badge badge-success">{{ skill.skill }} <i
+                                                            class="fa fa-close text-danger"></i></span></a>
+                                                </p>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% else %}
+                                        تعریف نشده
+                                    {% endif %}
+
+                                    <hr>
+
+                                    <strong class="d-block"><i class="fa fa-file-text-o mr-1"></i> یادداشت</strong>
+
+                                    {% if customuser.about_me %}
+                                        <p class="text-muted">{{ customuser.about_me }}</p>
+                                    {% else %}
+                                        <p class="text-muted">تعریف نشده</p>
+                                    {% endif %}
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-9">
+                            <div class="card">
+                                <div class="card-header p-2">
+                                    <ul class="nav nav-pills">
+                                        <li class="nav-item"><a class="nav-link active show" href="#activity"
+                                                                data-toggle="tab">پست ها</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">دسترسی
+                                            ها</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="#settings"
+                                                                data-toggle="tab">ویرایش پروفایل</a></li>
+                                        <li class="nav-item"><a class="nav-link"
+                                                                href="{% url 'change-password-from-admin' customuser.id %}"
+                                                                target="_blank">تغییر رمز عبور</a></li>
+                                    </ul>
+                                </div><!-- /.card-header -->
+                                <div class="card-body">
+                                    <div class="tab-content">
+                                        <div class="tab-pane active show" id="activity">
+                                            {% if customuser.article_set.exists %}
+                                                <!-- Post -->
+                                                {% for article in customuser.article_set.all %}
+                                                    <div class="post">
+                                                        <div class="user-block">
+                                                            {% if article.image %}
+                                                                <img class="img-circle img-bordered-sm"
+                                                                     src="{{ article.image.url }}" alt="user image">
+                                                            {% else %}
+                                                                <img class="img-circle img-bordered-sm"
+                                                                     src="" alt="عکسی یافت نشد">
+                                                            {% endif %}
+                                                            <span class="username">
+                          <a {% if article.status == 'p' %}
+                              href="{% url 'blog:article_detail' article.id article.get_slug_title %}"
+                          {% else %}
+                          {% endif %}
+                              target="_blank">{{ article.title }}</a>
+                                                                {% if request.user.is_superuser %}
+                                                                    <a href="{% url 'delete-user-post' customuser.id article.id %}"
+                                                                       class="float-left btn-tool" data-toggle="tooltip"
+                                                                       title="حذف کردن"><i
+                                                                            class="fa fa-times"></i></a>
+                                                                    <a href="{% url 'edit-article'  article.id %}"
+                                                                       class="float-left btn-tool" data-toggle="tooltip"
+                                                                       title="ویرایش کردن"><i
+                                                                            class="fa fa-edit"></i></a>
+                                                                {% endif %}
+                        </span>
+                                                            <span class="description">ایجاد شده در {{ article.date_created.year }}/{{ article.date_created.month }}/{{ article.date_created.day }}</span>
+                                                        </div>
+                                                        <!-- /.user-block -->
+                                                        <p>
+                                                            {{ article.content|safe|truncatechars:350 }}
+                                                        </p>
+
+                                                        {% if article.creator.get_full_name %}
+                                                            <p>
+                                                                <i class="fa fa-user mr-1 pl-2"></i> نوشته شده توسط
+                                                                <span
+                                                                        class="text-success">{{ article.creator.get_full_name }}</span>
+                                                            </p>
+                                                        {% else %}
+                                                            <p>
+                                                                <i class="fa fa-user mr-1 pl-2"></i> نوشته شده توسط
+                                                                <span
+                                                                        class="text-success">{{ article.creator.username }}</span>
+                                                            </p>
+                                                        {% endif %}
+                                                        <p>
+                                                            <i class="fa fa-user mr-1 pl-2"></i>وضعیت:
+                                                            {% if article.status == 'p' %}
+                                                                <span class="text-success">
+                                                            منتشر شده
+                                                             </span>
+                                                            {% elif article.status == 'w' %}
+                                                                <span class="text-warning">
+                                                             درحال بررسی
+                                                             </span>
+                                                            {% elif article.status == 'u' %}
+                                                                <span class="text-danger">
+                                                             منتشر نشده
+                                                             </span>
+                                                            {% else %}
+                                                                <span class="text-secondary">
+                                                             نامشخص
+                                                             </span>
+                                                            {% endif %}
+                                                        </p>
+                                                    </div>
+                                                {% endfor %}
+
+                                                <!-- /.post -->
+                                            {% else %}
+                                                <p class="alert alert-warning">پستی یافت نشد</p>
+                                            {% endif %}
+                                        </div>
+                                        <!-- /.tab-pane -->
+                                        <div class="tab-pane" id="timeline">
+                                            <!-- The timeline -->
+                                            <ul class="timeline timeline-inverse">
+                                                <!-- timeline time label -->
+                                                <li class="time-label">
+                        <span class="bg-danger">
+                          ۱۰ Feb. ۲۰۱۴
+                        </span>
+                                                </li>
+                                                <!-- /.timeline-label -->
+                                                <!-- timeline item -->
+                                                <li>
+                                                    <i class="fa fa-envelope bg-primary"></i>
+
+                                                    <div class="timeline-item">
+                                                        <span class="time"><i class="fa fa-clock-o"></i> ۱۲:۰۵</span>
+
+                                                        <h3 class="timeline-header"><a href="#">Support Team</a> sent
+                                                            you an
+                                                            email</h3>
+
+                                                        <div class="timeline-body">
+                                                            Etsy doostang zoodles disqus groupon greplin oooj voxy
+                                                            zoodles,
+                                                            weebly ning heekya handango imeem plugg dopplr jibjab,
+                                                            movity
+                                                            jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo
+                                                            kaboodle
+                                                            quora plaxo ideeli hulu weebly balihoo...
+                                                        </div>
+                                                        <div class="timeline-footer">
+                                                            <a href="#" class="btn btn-primary btn-sm">Read more</a>
+                                                            <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <!-- END timeline item -->
+                                                <!-- timeline item -->
+                                                <li>
+                                                    <i class="fa fa-user bg-info"></i>
+
+                                                    <div class="timeline-item">
+                                                        <span class="time"><i
+                                                                class="fa fa-clock-o"></i> ۵ mins ago</span>
+
+                                                        <h3 class="timeline-header no-border"><a href="#">Sarah
+                                                            Young</a>
+                                                            accepted your friend request
+                                                        </h3>
+                                                    </div>
+                                                </li>
+                                                <!-- END timeline item -->
+                                                <!-- timeline item -->
+                                                <li>
+                                                    <i class="fa fa-comments bg-warning"></i>
+
+                                                    <div class="timeline-item">
+                                                        <span class="time"><i
+                                                                class="fa fa-clock-o"></i> ۲۷ mins ago</span>
+
+                                                        <h3 class="timeline-header"><a href="#">Jay White</a> commented
+                                                            on
+                                                            your post</h3>
+
+                                                        <div class="timeline-body">
+                                                            Take me to your leader!
+                                                            Switzerland is small and neutral!
+                                                            We are more like Germany, ambitious and misunderstood!
+                                                        </div>
+                                                        <div class="timeline-footer">
+                                                            <a href="#" class="btn btn-warning btn-flat btn-sm">View
+                                                                comment</a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <!-- END timeline item -->
+                                                <!-- timeline time label -->
+                                                <li class="time-label">
+                        <span class="bg-success">
+                          ۳ Jan. ۲۰۱۴
+                        </span>
+                                                </li>
+                                                <!-- /.timeline-label -->
+                                                <!-- timeline item -->
+                                                <li>
+                                                    <i class="fa fa-camera bg-purple"></i>
+
+                                                    <div class="timeline-item">
+                                                        <span class="time"><i
+                                                                class="fa fa-clock-o"></i> ۲ days ago</span>
+
+                                                        <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded
+                                                            new
+                                                            photos</h3>
+
+                                                        <div class="timeline-body">
+                                                            <img src="http://placehold.it/150x100" alt="..."
+                                                                 class="margin">
+                                                            <img src="http://placehold.it/150x100" alt="..."
+                                                                 class="margin">
+                                                            <img src="http://placehold.it/150x100" alt="..."
+                                                                 class="margin">
+                                                            <img src="http://placehold.it/150x100" alt="..."
+                                                                 class="margin">
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <!-- END timeline item -->
+                                                <li>
+                                                    <i class="fa fa-clock-o bg-gray"></i>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <!-- /.tab-pane -->
+
+                                        <div class="tab-pane" id="settings">
+                                            <p class="alert alert-warning">میتواید فیلد ها را خالی نیز بگذارید.</p>
+                                            <form class="form-horizontal" id="edit-form" method="post"
+                                                  enctype="multipart/form-data"
+                                                  action="{% url 'edit-user' customuser.id %}">
+                                                {% csrf_token %}
+                                                <div class="form-group">
+                                                    <label for="first_name"
+                                                           class="col-sm-2 control-label">{{ form.first_name.label }}
+                                                        {% if customuser.first_name %}
+                                                            ({{ customuser.first_name }})
+                                                        {% endif %} </label>
+
+                                                    <div class="col-sm-10">
+                                                        {{ form.first_name }}
+                                                        {% if not customuser.first_name %}
+                                                            <p class="mt-1"> {{ form.first_name.help_text }}</p>
+                                                        {% endif %}
+                                                        {% for error in form.first_name.errors %}
+                                                            <p class="alert alert-danger mt-1">{{ error }}</p>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="last_name"
+                                                           class="col-sm-2 control-label">
+                                                        {{ form.last_name.label }}{% if customuser.last_name %}
+                                                            ({{ customuser.last_name }})
+                                                        {% endif %}</label>
+
+                                                    <div class="col-sm-10">
+                                                        {{ form.last_name }}
+                                                        {% if not customuser.last_name %}
+                                                            <p class="mt-1"> {{ form.last_name.help_text }}</p>
+                                                        {% endif %}
+                                                        {% for error in form.last_name.errors %}
+                                                            <p class="alert alert-danger mt-1">{{ error }}</p>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="last_name"
+                                                           class="col-sm-2 control-label">{{ form.profile_image.label }}</label>
+
+                                                    <div class="col-sm-10">
+                                                        {% if customuser.photo %}
+                                                            <span>درحال حاضر</span>
+                                                            <a href="{{ customuser.photo.url }}" target="_blank"
+                                                               class="my-1"> {{ customuser.photo.url }}</a>
+                                                        {% endif %}
+                                                        <div class="clear-fix"></div>
+                                                        {{ form.profile_image }}
+                                                        {% for error in form.profile_image.errors %}
+                                                            <p class="alert alert-danger mt-1">{{ error }}</p>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="address"
+                                                           class="col-sm-2 control-label">{{ form.address.label }}</label>
+
+                                                    <div class="col-sm-10">
+                                                        {{ form.address }}
+                                                        {% if customuser.location %}
+                                                            <p class="mt-1">({{ customuser.location }})</p>
+                                                        {% else %}
+                                                            <p class="mt-1">{{ form.address.help_text }}</p>
+                                                        {% endif %}
+                                                        {% for error in form.address.errors %}
+                                                            <p class="alert alert-danger mt-1">{{ error }}</p>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="address"
+                                                           class="col-sm-2 control-label">{{ form.education.label }}</label>
+
+                                                    <div class="col-sm-10">
+                                                        {{ form.education }}
+                                                        {% if customuser.education %}
+                                                            <p class="mt-1">({{ customuser.education }})</p>
+                                                        {% else %}
+                                                            <p class="mt-1">{{ form.education.help_text }}</p>
+                                                        {% endif %}
+                                                        {% for error in form.education.errors %}
+                                                            <p class="alert alert-danger mt-1">{{ error }}</p>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="about_me"
+                                                           class="col-sm-2 control-label">{{ form.about_me.label }}</label>
+
+                                                    <div class="col-sm-10">
+                                                        {{ form.about_me }}
+                                                        {% if customuser.location %}
+                                                            <p class="mt-1">({{ customuser.about_me }})</p>
+                                                        {% else %}
+                                                            <p class="mt-1"> {{ form.about_me.help_text }}</p>
+                                                        {% endif %}
+                                                        {% for error in form.about_me.errors %}
+                                                            <p class="alert alert-danger mt-1">{{ error }}</p>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="my_skill"
+                                                           class="col-sm-2 control-label">{{ form.my_skill.label }}</label>
+
+                                                    <div class="col-sm-10">
+                                                        {{ form.my_skill }}
+                                                        {% if customuser.skill_set.all %}
+                                                            {% for skill in customuser.skill_set.all %}
+                                                                <span class="mt-1">({{ skill.skill }})</span>
+                                                            {% endfor %}
+
+                                                        {% else %}
+                                                            {{ form.my_skill.help_text }}
+                                                        {% endif %}
+                                                        {% for error in form.my_skill.errors %}
+                                                            <p class="alert alert-danger mt-1">{{ error }}</p>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-sm-offset-2 col-sm-10">
+                                                        <button type="submit" name="edit-form" class="btn btn-danger">
+                                                            ذخیره
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <!-- /.tab-pane -->
+                                    </div>
+                                    <!-- /.tab-content -->
+                                </div><!-- /.card-body -->
+                            </div>
+                            <!-- /.nav-tabs-custom -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+
+
+                    <!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+        </div>s
+    {% else %}
+        <p class="alert alert-danger text-center">شما دسترسی یه این بخش را ندارید</p>
+    {% endif %}
+
+{% endblock %}
+{% block script %}
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+{% endblock %}

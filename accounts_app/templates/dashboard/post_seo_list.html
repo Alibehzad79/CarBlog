@@ -1,0 +1,91 @@
+{% extends 'dashboard/base.html' %}
+{% block head_css %}
+
+{% endblock %}
+{% block head_script %}
+
+{% endblock %}
+{% block title %}
+    لیست سئو پست
+{% endblock %}
+{% block content %}
+    <div class="content-wrapper" style="min-height: 1222px;">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>سئو پست ها</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-left">
+                            <li class="breadcrumb-item"><a href="/">خانه</a></li>
+                            <li class="breadcrumb-item active"> سئو پست ها</li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">لیست پست ها <span><a
+                                        href="{% url 'create-article-seo' %}"><button
+                                        class="btn btn-primary">ایجاد سئو</button></a></span>
+                                </h3>
+                            </div>
+                            <!-- /.card-header -->
+                            {% if seos %}
+                                <div class="card-body">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                        <tr class="text-center">
+                                            <th>آیدی پست</th>
+                                            <th>عنوان پست</th>
+                                        </tr>
+
+
+                                        {% for seo in seos %}
+                                            <tr class="text-center">
+                                                <td>{{ seo.article.id }}</td>
+
+                                                <td><a href="{% url 'delete-seo' seo.id %}"><i
+                                                        class="mx-2 fa fa-remove"></i></a>
+                                                    {{ seo.article.title }} <a
+                                                            href="{% url 'edit-article-seo' seo.article.id %}"><i
+                                                            class="mx-2 fa fa-edit"></i></a></td>
+                                            </tr>
+                                        {% endfor %}
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% else %}
+                                <p class="alert alert-warning text-center">خالی است.س</p>
+                            {% endif %}
+                            <!-- /.card-body -->
+                            <div class="card-footer clearfix">
+                                <ul class="pagination pagination-sm m-0 float-right">
+                                    <li class="page-item"></li>
+
+
+                                    <li class="page-item"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
+{% endblock %}
+{% block script %}
+
+{% endblock %}

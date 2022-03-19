@@ -1,0 +1,105 @@
+{% extends 'Base/base.html' %}
+{% block seo %}
+    <meta name="title" content="{{ meta_tag.title }}">
+    <meta name="keywords" content="{{ meta_tag.keywords }}">
+    <meta name="description" content="{{ meta_tag.description }}">
+{% endblock %}
+{% block title %}
+    {{ setting.name }}
+{% endblock %}
+{% block content %}
+    <div class="slider-area text-right">
+        <div class="slider-active owl-carousel nav-style-1">
+            {% for slider in sliders %}
+                <div class="single-slider-2 slider-height-1 d-flex align-items-center slider-height-res bg-img"
+                     style="background-image:url({% if slider.image %}
+                         {{ slider.image.url }}
+                     {% endif %} );">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-7 ml-auto">
+                                <div class="slider-content-2 slider-animated-1">
+                                    <h1 class="animated text-white">{{ slider.title|safe }}</h1>
+                                    <div class="slider-btn btn-hover">
+                                        <a class="animated" target="_blank" href="{{ slider.url }}">بیشتر بدانید</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+    </div>
+    <div class="product-area pb-60 text-right mt-5" dir="rtl">
+        <div class="container">
+            <div class="tab-filter-wrap mb-60">
+                <div class="product-tab-list-2 nav">
+                    <h4>جدید ترین ها </h4>
+                </div>
+            </div>
+        </div>
+        <div class="tab-content jump container" dir="rtl">
+            <div class="tab-pane active" id="product-1">
+                <div class="row">
+                    {% for article in articles %}
+                        <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6">
+                            <div class="product-wrap-2 mb-25 scroll-zoom">
+                                <div class="product-img">
+                                    <a href="product-details.html">
+                                        <a href="{% url 'blog:article_detail' article.id article.get_slug_title %}"><img
+                                                class="default-img" width="270" height="346"
+                                                src="{{ article.image.url }}" alt="{{ article.title }}"></a>
+                                        <a href="{% url 'blog:article_detail' article.id article.get_slug_title %}">
+                                            <img class="hover-img" width="270" height="346"
+                                                 src="{{ article.image.url }}" alt="{{ article.title }}">
+                                        </a>
+                                    </a>
+                                    <span class="purple">جدید</span>
+                                </div>
+                                <div class="product-content-2">
+                                    <div class="title-price-wrap-2">
+                                        <h3>
+                                            <a href="{% url 'blog:article_detail' article.id article.get_slug_title %}">{{ article.title }}</a>
+                                        </h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="blog-area pb-55 text-right">
+        <div class="container" dir="rtl">
+            <div class="section-title text-center mb-55">
+                <h2>پیشنهادی مدیر سایت</h2>
+            </div>
+            <div class="row" dir="rtl">
+                {% for suggestion_post in suggestion_posts %}
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="blog-wrap mb-30 scroll-zoom">
+                            <div class="blog-img">
+                                <a href="{% url 'blog:article_detail' suggestion_post.article.id suggestion_post.article.get_slug_title %}"><img
+                                        width="370" height="270" src="{% if suggestion_post.article.image != None %}
+                                {{ suggestion_post.article.image.url }}
+                            {% endif %} " alt="{{ suggestion_post.article.title }}"></a>
+                            </div>
+                            <div class="blog-content-wrap">
+                                <div class="blog-content text-center">
+                                    <h3>
+                                        <a href="{% url 'blog:article_detail' suggestion_post.article.id suggestion_post.article.get_slug_title %}">{{ suggestion_post.article.title }}</a>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

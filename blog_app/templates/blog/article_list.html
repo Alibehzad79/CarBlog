@@ -1,0 +1,123 @@
+{% extends 'Base/base.html' %}
+{% load render_partial %}
+{% block seo %}
+    <meta name="title" content="{{ meta_tag.title }}">
+    <meta name="keywords" content="{{ meta_tag.keywords }}">
+    <meta name="description" content="{{ meta_tag.description }}">
+{% endblock %}
+{% block title %}
+    لیست پست ها
+{% endblock %}
+{% block content %}
+    <div class="breadcrumb-area pt-35 pb-35 bg-gray-3">
+        <div class="container">
+            <div class="breadcrumb-content text-center">
+                <ul>
+                    <li class="active">لیست پست ها</li>
+                    <li>
+                        <a href="/">خانه</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="Blog-area pt-100 pb-100 text-right" dir="rtl">
+        <div class="container">
+            <div class="row flex-row-reverse">
+                <div class="col-lg-9">
+                    {% if object_list %}
+                        <div class="ml-20">
+                            <div class="row">
+                                {% for article in object_list %}
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="blog-wrap-2 mb-30">
+                                            <div class="blog-img-2">
+                                                {% if article.video_url != '' and article.video_url != None %}
+                                                    <a href="{% url 'blog:article_detail' article.id article.get_slug_title %}">
+                                                        <style>.h_iframe-aparat_embed_frame {
+                                                            position: relative;
+                                                        }
+
+                                                        .h_iframe-aparat_embed_frame .ratio {
+                                                            display: block;
+                                                            width: 750px;
+                                                            height: 440px;
+                                                        }
+
+                                                        .h_iframe-aparat_embed_frame iframe {
+                                                            position: absolute;
+                                                            top: 0;
+                                                            left: 0;
+                                                            width: 100%;
+                                                            height: 100%;
+                                                        }</style>
+                                                        <div class="h_iframe-aparat_embed_frame"><span
+                                                                style="display: block;padding-top: 57%"></span>
+                                                            <iframe src="https://www.aparat.com/video/video/embed/videohash/{{ article.get_video_url }}/vt/frame"
+                                                                    allowFullScreen="true" webkitallowfullscreen="true"
+                                                                    mozallowfullscreen="true"></iframe>
+                                                        </div>
+                                                    </a>
+                                                {% else %}
+                                                    {% if article.image %}
+                                                        <a href="{% url 'blog:article_detail' article.id article.get_slug_title %}"><img
+                                                                src="{{ article.image.url }}"
+                                                                alt="{{ article.title }}" width="750" height="440"></a>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </div>
+                                            <div class="blog-content-2">
+                                                <div class="blog-meta-2" dir="ltr">
+                                                    <ul>
+                                                        <li>{{ article.date_created.year }}/{{ article.date_created.month }}/{{ article.date_created.day }}</li>
+                                                        <li><a href="#">{{ article.articlecomment_set.count }} <i
+                                                                class="fa fa-comments-o"></i></a></li>
+                                                    </ul>
+                                                </div>
+                                                <h4>
+                                                    <a href="{% url 'blog:article_detail' article.id article.get_slug_title %}">{{ article.title }}</a>
+                                                </h4>
+                                                <p>{{ article.content|safe|truncatechars:151 }}</p>
+                                                <div class="blog-share-comment">
+                                                    <div class="blog-btn-2">
+                                                        <a href="{% url 'blog:article_detail' article.id article.get_slug_title %}">بیشتر</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+                            <div class="pro-pagination-style text-center mt-20">
+                                <ul>
+                                    <li>
+                                        {% if page_obj.has_previous %}
+                                            <a class="prev" href="?page={{ page_obj.previous_page_number }}"><i
+                                                    class="fa fa-angle-double-right"></i></a>
+                                        {% endif %}</li>
+                                    {% for page in paginator.page_range %}
+                                        {% if page == page_obj.number %}
+                                            <li><a class="active" href="?page={{ page }}">1</a></li>
+                                        {% else %}
+                                            <li><a href="?page={{ page }}">1</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    <li>
+                                        {% if page_obj.has_next %}
+                                            <a class="next" href="?page={{ page_obj.next_page_number }}"><i
+                                                    class="fa fa-angle-double-left"></i></a>
+                                        {% endif %}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    {% else %}
+                        <p class="alert alert-warning text-center">آموزشی یافت نشد</p>
+                    {% endif %}
+                </div>
+                {% render_partial 'blog_app.views.sidebar' %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

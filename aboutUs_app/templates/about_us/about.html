@@ -1,0 +1,51 @@
+{% extends 'Base/base.html' %}
+{% block seo %}
+
+{% endblock %}
+{% block title %}
+    درباره ما
+{% endblock %}
+{% block content %}
+    <div class="breadcrumb-area pt-35 pb-35 bg-gray-3" dir="ltr">
+        <div class="container">
+            <div class="breadcrumb-content text-center">
+                <ul>
+                    <li class="active">درباره ما</li>
+                    <li>
+                        <a href="/">خانه</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="welcome-area pt-100 pb-95" dir="rtl">
+        <div class="container">
+            <div class="welcome-content text-center">
+                <h1>{{ about.title }}</h1>
+                <p>{{ about.content|safe }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="team-area pt-95 pb-70" dir="rtl">
+        <div class="container">
+            <div class="section-title-2 text-center mb-60">
+                <h2>تیم ما</h2>
+            </div>
+            <div class="row">
+                {% for team in about.team_set.all %}
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="team-wrapper mb-30">
+                            <div class="team-img">
+                                <img src="{{ team.image.url }}" width="270" height="330" alt="{{ team.name }}">
+                            </div>
+                            <div class="team-content text-center">
+                                <h4>{{ team.name }}</h4>
+                                <span>{{ team.job }}</span>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

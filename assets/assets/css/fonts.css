@@ -1,0 +1,55 @@
+@font-face {
+    font-family: 'Cormorant Garamond';
+    src: url('../fonts/CormorantGaramond-Regular.eot');
+    src: url('../fonts/CormorantGaramond-Regular.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/CormorantGaramond-Regular.woff2') format('woff2'),
+        url('../fonts/CormorantGaramond-Regular.woff') format('woff'),
+        url('../fonts/CormorantGaramond-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Cormorant Garamond';
+    src: url('../fonts/CormorantGaramond-SemiBold.eot');
+    src: url('../fonts/CormorantGaramond-SemiBold.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/CormorantGaramond-SemiBold.woff2') format('woff2'),
+        url('../fonts/CormorantGaramond-SemiBold.woff') format('woff'),
+        url('../fonts/CormorantGaramond-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Cormorant Garamond';
+    src: url('../fonts/CormorantGaramond-Bold.eot');
+    src: url('../fonts/CormorantGaramond-Bold.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/CormorantGaramond-Bold.woff2') format('woff2'),
+        url('../fonts/CormorantGaramond-Bold.woff') format('woff'),
+        url('../fonts/CormorantGaramond-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Cormorant Garamond';
+    src: url('../fonts/CormorantGaramond-Light.eot');
+    src: url('../fonts/CormorantGaramond-Light.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/CormorantGaramond-Light.woff2') format('woff2'),
+        url('../fonts/CormorantGaramond-Light.woff') format('woff'),
+        url('../fonts/CormorantGaramond-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Cormorant Garamond';
+    src: url('../fonts/CormorantGaramond-Medium.eot');
+    src: url('../fonts/CormorantGaramond-Medium.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/CormorantGaramond-Medium.woff2') format('woff2'),
+        url('../fonts/CormorantGaramond-Medium.woff') format('woff'),
+        url('../fonts/CormorantGaramond-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+

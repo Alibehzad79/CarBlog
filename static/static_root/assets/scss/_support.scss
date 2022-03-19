@@ -1,0 +1,124 @@
+/*-------- 4. Support style  -------*/
+
+.support-wrap {
+    display: flex;
+    .support-icon {
+        flex: 0 0 50px;
+        margin-right: 20px;
+        img {
+            width: 100%;
+        }
+    }
+    .support-content {
+        h5 {
+            font-size: 18px;
+            margin: 0 0 5px;
+        }
+        p{
+            color: #666;
+            margin: 0;
+        }
+    }
+    &.support-2 {
+        margin-left: 22px;
+        @media #{$lg-layout}{
+            margin-left: 0px;
+        }
+        @media #{$md-layout}{
+            margin-left: 0px;
+        }
+        @media #{$xs-layout}{
+            margin-left: 0px;
+        }
+        .support-icon {
+            flex: 0 0 41px;
+        }
+    }
+    &.support-3 {
+        margin-left: 9px;
+        @media #{$lg-layout}{
+            margin-left: 0px;
+        }
+        @media #{$md-layout}{
+            margin-left: 0px;
+        }
+        @media #{$xs-layout}{
+            margin-left: 0px;
+        }
+        .support-icon {
+            flex: 0 0 41px;
+        }
+    }
+    &.support-4 {
+        margin-left: 23px;
+        @media #{$lg-layout}{
+            margin-left: 0px;
+        }
+        @media #{$md-layout}{
+            margin-left: 0px;
+        }
+        @media #{$xs-layout}{
+            margin-left: 0px;
+        }
+       .support-icon {
+            flex: 0 0 35px;
+        } 
+    }
+    &:hover .support-icon img {
+        animation: 500ms ease-in-out 0s normal none 1 running tada;
+    }
+}
+
+/* support hm3 */
+.support-wrap-2 {
+    .support-content-2 {
+        h5{
+            font-size: 18px;
+            color: #494949;
+            margin: 15px 0 15px;
+            line-height: 24px;
+        }
+        p{
+            font-size: 14px;
+            color: #6a6a6a;
+            margin: 0 auto;
+            width: 80%;
+            @media #{$md-layout}{
+                width: 100%;
+            }
+        }
+    }
+    &:hover .support-content-2 img {
+        animation: 500ms ease-in-out 0s normal none 1 running tada;
+    }
+    &.support-shape {
+        position: relative;
+        &:before {
+            position: absolute;
+            right: -14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #d5d4d4;
+            height: 61px;
+            width: 1px;
+            content: "";
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

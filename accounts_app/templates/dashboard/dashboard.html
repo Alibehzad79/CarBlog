@@ -1,0 +1,263 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}
+    پنل مدیریت
+{% endblock title %}
+{% block content %}
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">داشبورد</h1>
+                    </div><!-- /.col -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <!-- Small boxes (Stat box) -->
+                    <div class="row">
+                        <!-- ./col -->
+                        {% if request.user.is_superuser %}
+                            <div class="col-lg-3 col-6">
+                                <!-- small box -->
+                                <div class="small-box bg-success">
+                                    <div class="inner">
+                                        <h3>{{ articleModel.count }}<sup style="font-size: 20px"></sup></h3>
+
+                                        <p>تعداد کل پست ها</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="ion ion-stats-bars"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="col-lg-3 col-6">
+                            <!-- small box -->
+                            <div class="small-box bg-success">
+                                <div class="inner">
+                                    <h3>{{ user.article_set.count }}<sup style="font-size: 20px"></sup></h3>
+
+                                    <p>تعداد پست های منتشر شده توسط من</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-stats-bars"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                        {% if request.user.is_superuser %}
+                            <div class="col-lg-3 col-6">
+                                <!-- small box -->
+                                <div class="small-box bg-warning">
+                                    <div class="inner">
+                                        <h3>{{ userModel.count }}</h3>
+
+                                        <p>کاربران ثبت شده</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="ion ion-person-add"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-6">
+                                <!-- small box -->
+                                <div class="small-box bg-danger">
+                                    <div class="inner">
+                                        <h3>{{ visit_all }}</h3>
+
+                                        <p>بازدید کل پست ها</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="ion ion-pie-graph"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <!-- ./col -->
+                        <div class="col-lg-3 col-6">
+                            <!-- small box -->
+                            <div class="small-box bg-danger">
+                                <div class="inner">
+                                    <h3>{{ my_visit_posts }}</h3>
+
+                                    <p>بازدید پست های من</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-pie-graph"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                    </div>
+                </div><!-- /.container-fluid -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">جدول داده پست ها</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            {% if user.article_set.all %}
+                                <div class="card-body">
+                                <div id="example2_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6"></div>
+                                        <div class="col-sm-12 col-md-6"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <table id="example2" class="table table-bordered table-hover dataTable"
+                                                   role="grid">
+                                                <thead>
+                                                <tr role="row">
+                                                    <th class="sorting_asc" tabindex="0" aria-controls="example2"
+                                                        rowspan="1" colspan="1" aria-sort="ascending"
+                                                        aria-label="#آیدی: activate to sort column descending">
+                                                        #آیدی
+                                                    </th>
+                                                    <th class="sorting" tabindex="0" aria-controls="example2"
+                                                        rowspan="1" colspan="1"
+                                                        aria-label="پست: activate to sort column ascending">پست
+                                                    </th>
+                                                    <th class="sorting" tabindex="0" aria-controls="example2"
+                                                        rowspan="1" colspan="1"
+                                                        aria-label="وضعیت: activate to sort column ascending">وضعیت
+                                                    </th>
+                                                    <th class="sorting" tabindex="0" aria-controls="example2"
+                                                        rowspan="1" colspan="1"
+                                                        aria-label="تاریخ انتشار: activate to sort column ascending">
+                                                        تاریخ ایجاد
+                                                    </th>
+                                                    <th class="sorting" tabindex="0" aria-controls="example2"
+                                                        rowspan="1" colspan="1"
+                                                        aria-label="تاریخ انتشار: activate to sort column ascending">
+                                                        آخرین بروزرسانی
+                                                    </th>
+                                                    <th class="sorting" tabindex="0" aria-controls="example2"
+                                                        rowspan="1" colspan="1"
+                                                        aria-label="تاریخ انتشار: activate to sort column ascending">
+                                                        تعداد بازدید
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+
+
+                                                {% if request.user.is_superuser %}
+                                                    {% for article in articleModel %}
+                                                        {% if article %}
+                                                            <tr role="row" class="odd">
+                                                                <td class="sorting_1">{{ article.id }}</td>
+                                                                <td><a target="_blank"
+                                                                       {% if article.status == 'p' %}
+                                                                        href="{% url 'blog:article_detail' article.id article.get_slug_title %}"
+                                                                       {% endif %} >{{ article.title }}</a>
+                                                                </td>
+                                                                {% if article.status == 'p' %}
+                                                                    <td><span class="badge bg-success">منتشر شده</span>
+                                                                    </td>
+                                                                {% else %}
+                                                                    {% if article.status == 'u' %}
+                                                                        <td><span
+                                                                                class="badge bg-danger">منتشر نشده</span>
+                                                                        </td>
+                                                                    {% else %}
+                                                                        {% if article.status == 'w' %}
+                                                                            <td><span
+                                                                                    class="badge bg-warning">درحال بررسی</span>
+                                                                            </td>
+                                                                        {% endif %}
+                                                                    {% endif %}
+
+                                                                {% endif %}
+                                                                {% if article.date_created %}
+                                                                    <td>{{ article.date_created.year }}/{{ article.date_created.month }}/{{ article.date_created.day }}</td>
+                                                                {% endif %}
+                                                                {% if article.date_update and article.status == 'p' %}
+                                                                    <td>{{ article.date_update.year }}/{{ article.date_update.month }}/{{ article.date_update.day }}</td>
+                                                                {% else %}
+                                                                    <td>تعریف نشده</td>
+                                                                {% endif %}
+                                                                <td>{{ article.visit_count }}</td>
+                                                            </tr>
+                                                        {% endif %}
+                                                    {% endfor %}
+
+                                                {% else %}
+                                                    {% for article in user.article_set.all %}
+                                                        {% if article %}
+                                                            <tr role="row" class="odd">
+                                                                <td class="sorting_1">{{ article.id }}</td>
+                                                                <td><a target="_blank"
+                                                                       {% if article.status == 'p' %}
+                                                                        href="{% url 'blog:article_detail' article.id article.get_slug_title %}"
+                                                                       {% endif %}>{{ article.title }}</a>
+                                                                </td>
+                                                                {% if article.creator.get_full_name %}
+                                                                    <td>{{ article.status }}</td>
+                                                                {% else %}
+                                                                    {% if article.status == 'p' %}
+                                                                        <td><span
+                                                                                class="badge bg-success">منتشر شده</span>
+                                                                        </td>
+                                                                    {% else %}
+                                                                        {% if article.status == 'u' %}
+                                                                            <td><span
+                                                                                    class="badge bg-danger">منتشر نشده</span>
+                                                                            </td>
+                                                                        {% else %}
+                                                                            {% if article.status == 'w' %}
+                                                                                <td><span
+                                                                                        class="badge bg-warning">درحال بررسی</span>
+                                                                                </td>
+                                                                            {% endif %}
+                                                                        {% endif %}
+
+                                                                    {% endif %}
+                                                                {% endif %}
+                                                                {% if article.date_created %}
+                                                                    <td>{{ article.date_created.year }}/{{ article.date_created.month }}/{{ article.date_created.day }}</td>
+                                                                {% endif %}
+                                                                {% if article.date_update and article.status == 'p' %}
+                                                                    <td>{{ article.date_update.year }}/{{ article.date_update.month }}/{{ article.date_update.day }}</td>
+                                                                {% else %}
+                                                                    <td>تعریف نشده</td>
+                                                                {% endif %}
+                                                                <td>{{ article.visit_count }}</td>
+                                                            </tr>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
+                                                </tbody>
+                                                <tfoot>
+                                                <tr>
+                                                    <th rowspan="1" colspan="1">#آیدی</th>
+                                                    <th rowspan="1" colspan="1">پست</th>
+                                                    <th rowspan="1" colspan="1">وضعیت</th>
+                                                    <th rowspan="1" colspan="1">تاریخ ایجاد</th>
+                                                    <th rowspan="1" colspan="1">آخرین بروزرسانی</th>
+                                                    <th rowspan="1" colspan="1">تعداد بازدید</th>
+                                                </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                {% else %}
+                                <p class="alert alert-warning text-center">درحال حاضر شما پستی ندارید.</p>
+                            {% endif %}
+                            <!-- /.card-body -->
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock content %}

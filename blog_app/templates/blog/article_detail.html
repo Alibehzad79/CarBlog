@@ -1,0 +1,183 @@
+{% extends 'Base/base.html' %}
+{% load render_partial %}
+{% block seo %}
+    <meta name="title" content="{{ meta_tag.title }}">
+    <meta name="keywords" content="{{ meta_tag.keywords }}">
+    <meta name="description" content="{{ meta_tag.description }}">
+{% endblock %}
+{% block title %}
+    {{ article.title }}
+{% endblock %}
+{% block content %}
+    <div class="breadcrumb-area pt-35 pb-35 bg-gray-3">
+        <div class="container">
+            <div class="breadcrumb-content text-center">
+                <ul>
+                    <li class="active">جزئیات پست</li>
+                    <li>
+                        <a href="/">خانه</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="Blog-area pt-100 pb-100 text-right" dir="rtl">
+        <div class="container">
+            <div class="row flex-row-reverse">
+                <div class="col-lg-9">
+                    <div class="blog-details-wrapper ml-20">
+                        <div class="blog-details-top">
+                            <div class="blog-details-img">
+                                {% if article.video_url != None and article.video_url != '' %}
+                                    <style>.h_iframe-aparat_embed_frame {
+                                        position: relative;
+                                    }
+
+                                    .h_iframe-aparat_embed_frame .ratio {
+                                        display: block;
+                                        width: 100%;
+                                        height: auto;
+                                    }
+
+                                    .h_iframe-aparat_embed_frame iframe {
+                                        position: absolute;
+                                        top: 0;
+                                        left: 0;
+                                        width: 100%;
+                                        height: 100%;
+                                    }</style>
+                                    <div class="h_iframe-aparat_embed_frame"><span
+                                            style="display: block;padding-top: 57%"></span>
+                                        <iframe src="https://www.aparat.com/video/video/embed/videohash/{{ article.get_video_url }}/vt/frame"
+                                                allowFullScreen="true" webkitallowfullscreen="true"
+                                                mozallowfullscreen="true"></iframe>
+                                    </div>
+                                {% else %}
+                                    <img alt="{{ article.title }}" width="750" height="440"
+                                         src="{{ article.image.url }}">
+                                {% endif %}
+                            </div>
+                            <div class="blog-details-content">
+                                <div class="blog-meta-2 col-sm-12">
+                                    <ul dir="ltr">
+                                        <li>
+                                            <span>منتشر شده در: </span>{{ article.date_created.year }}/{{ article.date_created.month }}/{{ article.date_created.day }}
+                                        </li>
+                                        <li>
+                                            <span>آخرین بروزرسانی در: </span> {{ article.date_update.year }}/{{ article.date_update.month }}/{{ article.date_update.day }}
+                                        </li>
+                                        <li><i class="fa fa-comments-o mx-1"></i><a href="#">
+                                            {% if article.commnet_set == None %}
+                                                0
+                                            {% else %}
+                                                {{ articke.comment_set.count }}
+                                            {% endif %} </a></li>
+                                        <li><a href="#"><i class="fa fa-eye mx-1"></i>{{ article.visit_count }}</a></li>
+                                    </ul>
+                                </div>
+                                <h3>{{ article.title }}</h3>
+                                <p>{{ article.content|safe }}</p>
+                            </div>
+                        </div>
+                        <div class="dec-img-wrapper">
+                            <div class="row">
+                                {% for articlegallery in article.articlegallery_set.all %}
+                                    <div class="col-md-6">
+                                        <div class="dec-img mb-50">
+                                            <img height="353" width="466" alt="{{ articlegallery.title }}"
+                                                 src="{{ articlegallery.image.url }}">
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                        {% if article.category %}
+                            <div class="tag-share">
+                                <div class="dec-tag">
+                                    <h5>دسته بندی ها</h5>
+                                    <ul>
+                                        <li><a href="{% url 'blog:get_category' article.category.slug %}">
+                                            {{ article.category.name }}
+
+                                        </a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if article.tag %}
+                            <div class="dec-tag mb-4">
+                                <h5>برچسب ها</h5>
+                                <ul>
+                                    {% for tag in article.tag.all %}
+                                        <li class="d-inline-block"><a href="{% url 'blog:get_tag' tag.slug %}">
+                                            #{{ tag.name }}{% if forloop.last %}
+                                        {% else %}،
+                                        {% endif %}
+                                        </a></li>
+                                    {% endfor %}
+
+                                </ul>
+                            </div>
+                        {% endif %}
+                        <div class="blog-reply-wrapper mt-50">
+                            <h4 class="blog-dec-title">ارسال نظر (<span class="text-danger mx-1">نظرات بعد از تائید مدیر سایت، منتشر می شود.</span>)
+                            </h4>
+                            <form class="blog-form" method="post">
+                                {% csrf_token %}
+                                {{ form.article_id }}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="leave-form">
+                                            {{ form.name }}
+                                            {% for error in form.name.errors %}
+                                                <p class="alert alert-danger">{{ error }}</p>
+                                            {% endfor %}
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="leave-form">
+                                            {{ form.email }}
+                                            {% for error in form.email.errors %}
+                                                <p class="alert alert-danger">{{ error }}</p>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="text-leave">
+                                            {{ form.text }}
+                                            {% for error in form.texts.errors %}
+                                                <p class="alert alert-danger">{{ error }}</p>
+                                            {% endfor %}
+                                            <input type="submit" value="ارسال">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                        <div class="blog-comment-wrapper mt-55">
+                            <h4 class="blog-dec-title">نظرات : {{ comments.count }}</h4>
+                            {% for comment in comments %}
+                                <div class="single-comment-wrapper mt-35">
+                                    <div class="blog-comment-img">
+                                        <img src="https://www.shareicon.net/data/512x512/2015/09/18/103159_user_512x512.png"
+                                             width="120" height="120" alt="user">
+                                    </div>
+                                    <div class="blog-comment-content mx-4">
+                                        <h4>{{ comment.name }}</h4>
+                                        <span>{{ comment.date_send.year }}/{{ comment.date_send.month }}/{{ comment.date_send.day }} </span>
+                                        <p>{{ comment.text }} </p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                </div>
+                {% render_partial 'blog_app.views.sidebar' %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

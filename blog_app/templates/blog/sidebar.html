@@ -1,0 +1,56 @@
+<div class="col-lg-3">
+    <div class="sidebar-style">
+        <div class="sidebar-widget">
+            <h4 class="pro-sidebar-title">پست های تازه </h4>
+            <div class="sidebar-project-wrap mt-30">
+                {% for recent_article in recent_articles %}
+                    <div class="single-sidebar-blog">
+                        <div class="sidebar-blog-img">
+                            {% if recent_article.image %}
+                                <a href="{% url 'blog:article_detail' recent_article.id recent_article.get_slug_title %}"><img
+                                    width="70" height="60" src="{{ recent_article.image.url }}"
+                                    alt="{{ recent_article.title }}"></a>
+                            {% endif %}
+                        </div>
+                        <div class="sidebar-blog-content mx-2">
+                            <span>{{ recent_article.category.name }}</span>
+                            <h4>
+                                <a href="{% url 'blog:article_detail' recent_article.id recent_article.get_slug_title %}">{{ recent_article.title }}</a>
+                            </h4>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+        {% if categories %}
+            <div class="sidebar-widget mt-35">
+            <h4 class="pro-sidebar-title">دسته بندی ها </h4>
+            <div class="sidebar-widget-list mt-20 text-left">
+                <ul>
+                    {% for category in categories %}
+                        <li>
+                            <div class="sidebar-widget-list-left text-right">
+                                <a href="{% url 'blog:get_category' category.slug %}">{{ category.name }} <span
+                                        class="float-left">{{ category.article_set.count }}</span> </a>
+                            </div>
+                        </li>
+                    {% endfor %}
+
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+        <div class="sidebar-widget mt-50">
+            <h4 class="pro-sidebar-title">برچسب ها </h4>
+            <div class="sidebar-widget-tag mt-25">
+                <ul>
+                    {% for tag in tags %}
+                        <li><a href="{% url 'blog:get_tag' tag.slug %}">{{ tag.name }}</a></li>
+                    {% endfor %}
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

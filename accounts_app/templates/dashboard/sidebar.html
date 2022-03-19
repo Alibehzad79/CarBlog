@@ -1,0 +1,156 @@
+{% load static %}
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="index3.html" class="brand-link">
+        <img src="{% static 'dist/img/AdminLTELogo.png' %}" alt="AdminLTE Logo"
+             class="brand-image img-circle elevation-3"
+             style="opacity: .8">
+        <span class="brand-text font-weight-light">پنل مدیریت</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar" style="direction: ltr">
+        <div style="direction: rtl">
+            <!-- Sidebar user panel (optional) -->
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    <img src='
+
+
+
+                            {% if user.photo %}{{ user.photo.url }}{% else %}https://www.shareicon.net/data/512x512/2015/09/18/103159_user_512x512.png{% endif %}'
+                         class="img-circle elevation-2" alt="User Image">
+                </div>
+                <div class="info">
+                    <a href="{% url 'dashboard' %}" class="d-block">
+                        {% if user.get_full_name %}
+                            {{ user.get_full_name }}
+                        {% else %}
+                            {{ user.username }}
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
+                    <!-- Add icons to the links using the .nav-icon class
+                         with font-awesome or any other icon font library -->
+                    <li class="nav-item">
+                        <a href="{% url 'dashboard' %}" class="nav-link {% if request.path == '/accounts/dashboard/' %}
+                            active
+                        {% endif %} ">
+                            <i class="fa fa-circle-o nav-icon"></i>
+                            <p>داشبورد</p>
+                        </a>
+                    </li>
+                    {% if request.user.is_superuser %}
+                        <li class="nav-item has-treeview {% if request.path == '/accounts/dashboard/user-list/' or request.path == '/accounts/dashboard/create-new-user/' %}
+                            menu-open
+                        {% endif %}">
+                            <a href="#"
+                               class="nav-link {% if request.path == '/accounts/dashboard/user-list/' or request.path == '/accounts/dashboard/create-new-user/' %}
+                            active
+                        {% endif %}">
+                                <i class="nav-icon fa fa-user"></i>
+                                <p>
+                                    کاربران
+                                    <i class="right fa fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview {% if request.path == '/accounts/dashboard/user-list/' %}
+                            d-block
+                        {% endif %}">
+                                <li class="nav-item">
+                                    <a href="{% url 'user-list' %}"
+                                       class="nav-link {% if request.path == '/accounts/dashboard/user-list/' %}active{% endif %}">
+                                        <i class="fa fa-user-circle nav-icon"></i>
+                                        <p>لیست کاربران</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'create-new-user' %}"
+                                       class="nav-link {% if request.path == '/accounts/dashboard/create-new-user/' %}
+                                    active
+                                    {% endif %} ">
+                                        <i class="fa fa-user-plus nav-icon"></i>
+                                        <p>ایجاد کاربر جدید</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fa fa-book"></i>
+                            <p>
+                                وبلاگ
+                                <i class="fa fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{% url 'article-list' %}" class="nav-link">
+                                    <i class="fa fa-circle-o nav-icon"></i>
+                                    <p> پست ها</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'gallery-list' %}" class="nav-link">
+                                    <i class="fa fa-circle-o nav-icon"></i>
+                                    <p> گالری</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'category-list' %}" class="nav-link">
+                                    <i class="fa fa-circle-o nav-icon"></i>
+                                    <p>دسته بندی ها</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'tag-list' %}" class="nav-link">
+                                    <i class="fa fa-circle-o nav-icon"></i>
+                                    <p>برچسب ها</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'seo-articleList' %}" class="nav-link">
+                                    <i class="fa fa-circle-o nav-icon"></i>
+                                    <p>سئو صفحه ی لیست پست ها</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'post-seo-list' %}" class="nav-link">
+                                    <i class="fa fa-circle-o nav-icon"></i>
+                                    <p>سئو پست ها</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'suggestion-post-list' %}" class="nav-link">
+                                    <i class="fa fa-circle-o nav-icon"></i>
+                                    <p>پست های پیشنهادی مدیر</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="pages/UI/sliders.html" class="nav-link">
+                                    <i class="fa fa-circle-o nav-icon"></i>
+                                    <p>نظرات</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'logout' %}" class="nav-link">
+                            <i class="nav-icon fa fa-close text-danger"></i>
+                            <p>خروج</p>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /.sidebar-menu -->
+        </div>
+    </div>
+    <!-- /.sidebar -->
+</aside>

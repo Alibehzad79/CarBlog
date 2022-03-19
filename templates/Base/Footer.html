@@ -1,0 +1,74 @@
+{% load static %}
+<footer class="footer-area bg-gray pt-100 pb-70 text-right" dir="rtl">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2 col-md-4 col-sm-4">
+                <div class="copyright mb-30">
+                    <div class="footer-logo">
+                        <a href="/">
+                            <img alt="{{ setting.name }}" src="{{ setting.logo.url }}" width="103" height="26">
+                        </a>
+                    </div>
+                    <p><a href="#" class="font-weight-bold">{{ setting.name }}</a><br>{{ setting.copy_right }}<br>
+                        <span>{{ now_year.year }} ©</span></p>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4">
+                <div class="footer-widget mb-30 ml-30">
+                    <div class="footer-title">
+                        <h3>درباره ما</h3>
+                    </div>
+                    <div class="footer-list">
+                        <ul>
+                            <li><a href="{% url 'about:about-us' %}">درباره ما</a></li>
+                            <li><a href="{% url 'contact:contact-us' %}">تماس با ما</a></li>
+                            <li><a href="{% url 'blog:article_list' %}">آموزش ها</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-6 col-sm-6">
+                <div class="footer-widget mb-30 ml-75">
+                    <div class="footer-title">
+                        <h3>شبکه های ما</h3>
+                    </div>
+                    <div class="footer-list">
+                        <ul>
+                            {% for social_network in setting.socialnetwork_set.all %}
+                                <li><a target="_blank" href="{{ social_network.url }}">{{ social_network.name }}</a>
+                                </li>
+                            {% endfor %}
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6 mb-5" dir="rtl">
+                <div class="footer-widget mb-30 ml-70">
+                    <div class="footer-title">
+                        <h3>عضویت در خبرنامه</h3>
+                    </div>
+                    <div class="subscribe-style" dir="rtl">
+                        <p dir="rtl" class="">لطفا برای خبر دار شدن از جدید ترین آموزش ها، ایمیل خود را وارد کنید .</p>
+                        <div id="mc_embed_signup" class="subscribe-form">
+                            <form id="mc-embedded-subscribe-form" class="validate" method="post">
+                                {% csrf_token %}
+                                <div id="mc_embed_signup_scroll" class="mc-form">
+                                    {{ form.email }}
+                                    {% for error in form.email.errors %}
+                                        <p class="alert alert-danger">{{ error }}</p>
+                                    {% endfor %}
+
+                                    <div class="clear text-center">
+                                        <input id="mc-embedded-subscribe" class="button" type="submit" name="subscribe"
+                                               value="عضویت">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
