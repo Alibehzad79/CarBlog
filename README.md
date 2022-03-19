@@ -11,6 +11,7 @@ mkdir CarBlog <br />
 <h6>clone CarBlog to CarBlog folder in your pc</h6> <br />
 cd CarBlog/CarBlog
 <br />
+0.pip install -r requirements.txt
 1.python manage.py migrate <br />
 2.python manage.py collectstatic <br />
 3.python manage.py createsuperuser <br />
