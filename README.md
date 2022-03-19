@@ -15,8 +15,12 @@ cd CarBlog/CarBlog
   <li>pip install -r requirements.txt</li>
   <li>python manage.py migrate</li>
   <li>python manage.py collectstatic</li>
-  <li>python manage.py createsuperuser</li>
+  <li>python manage.py createsuperuser</li> ::: # for login
   <li>python manage.py runserver 8000</li>
 </ol>
+--------------------------------------<br />
+Django Admin Panel:> 127.0.0.1/admin/ ::: #login required!
+<br />
+Custom Dashboard(admin panel):> 127.0.0.1/accounts/dashboard/ ::: #login required!
 --------------------------------------<br>
 Enjoy ❤️😍
