@@ -10,9 +10,9 @@ from pyparsing import make_xml_tags
 from accounts_app.forms import CreateNewUserForm, EditUserProfileForm, ChangeUserPasswordForm, \
     EditArticleForm, CategoryEditFrom, CreateCategoryFrom, CreateTagFrom, TagEditFrom, ArticleForm, GalleryForm, \
     EditGalleryForm, CreateSeoArticleListForm, EditSeoArticleListForm, EditArticleSeo, CreateArticleSeo, \
-    SuggestionPostFrom, EditSuggestionPostFrom
+    SuggestionPostForm, EditCommentForm
 from accounts_app.models import CustomUser
-from blog_app.models import Article, Category, Tag, ArticleGallery, SeoArticleList, Seo, SuggestionPost
+from blog_app.models import Article, Category, Tag, ArticleGallery, SeoArticleList, Seo, SuggestionPost, ArticleComment
 from django.contrib.auth.mixins import PermissionDenied
 from django.forms import inlineformset_factory
 
@@ -843,7 +843,7 @@ def suggestion_post_list(request):
 def create_suggestion_post(request):
     if request.user.is_superuser:
         if request.method == 'POST':
-            form = SuggestionPostFrom(request.POST or None)
+            form = SuggestionPostForm(request.POST or None)
             if form.is_valid():
                 post = form.cleaned_data.get('post')
                 if SuggestionPost.objects.filter(article=post).exists():
@@ -854,7 +854,7 @@ def create_suggestion_post(request):
                 if new_suggestion is not None:
                     return redirect('suggestion-post-list')
         else:
-            form = SuggestionPostFrom()
+            form = SuggestionPostForm()
         context = {
             'form': form,
         }
@@ -875,4 +875,64 @@ def delete_suggestion_post(request, **kwargs):
     else:
         return redirect('dashboard')
 
+
 # todo create comment list page and create edit page for this page
+@login_required(login_url='/accounts/login?next=accounts/dashboard/')
+def comment_list(request):
+    if request.user.is_superuser:
+        comments = ArticleComment.objects.all()
+        context = {
+            'comments': comments,
+        }
+        return render(request, 'dashboard/comment_list.html', context)
+    else:
+        return redirect('dashboard')
+
+
+@login_required(login_url='/accounts/login?next=accounts/dashboard/')
+def edit_comment(request, **kwargs):
+    if request.user.is_superuser:
+        comment_id = kwargs['comment_id']
+        comment = ArticleComment.objects.filter(id=comment_id).exists()
+        if comment:
+            comment = ArticleComment.objects.get(id=comment_id)
+            if request.method == 'POST':
+                form = EditCommentForm(request.POST or None)
+                if form.is_valid():
+                    post = form.cleaned_data.get('post')
+                    name = form.cleaned_data.get('name')
+                    email = form.cleaned_data.get('email')
+                    text = form.cleaned_data.get('comment')
+                    status = form.cleaned_data.get('status')
+                    comment.article, comment.name, comment.email, comment.text, comment.status = post, name, email, text, status
+                    comment.save()
+                    return redirect('comments')
+            else:
+                initials = {
+                    'post': comment.article,
+                    'name': comment.name,
+                    'email': comment.email,
+                    'comment': comment.text,
+                    'status': comment.status,
+                }
+                form = EditCommentForm(initial=initials)
+            context = {
+                'form': form,
+                'comment': comment,
+            }
+            return render(request, 'dashboard/edit_comment.html', context)
+    else:
+        return redirect('dashboard')
+
+
+@login_required(login_url='/accounts/login?next=accounts/dashboard/')
+def delete_comment(request, **kwargs):
+    if request.user.is_superuser:
+        comment_id = kwargs['comment_id']
+        if ArticleComment.objects.filter(id=comment_id).exists():
+            ArticleComment.objects.filter(id=comment_id).delete()
+            return redirect('comments')
+        else:
+            return HttpResponse('نظر مورد نظر یافت نشد')
+    else:
+        return redirect('dashboard')

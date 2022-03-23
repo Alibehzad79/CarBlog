@@ -7,8 +7,11 @@ from accounts_app.views import dashboard, UserListView, delete_user_post, AdminL
     article_gallery, gallery_list, remove_gallery, edit_article_gallery, seo_for_article_list, \
     delete_seo_for_article_list, create_seo_for_article_list, edit_seo_for_article_list, post_seo_list, \
     edit_article_seo, create_article_seo, delete_seo, suggestion_post_list, create_suggestion_post, \
-    delete_suggestion_post
+    delete_suggestion_post, comment_list, edit_comment, delete_comment
 from django.contrib.auth import views as auth_view
+
+
+
 
 urlpatterns = [
     path('dashboard/', dashboard, name='dashboard'),
@@ -52,4 +55,7 @@ urlpatterns = [
     path('suggestion-post-list/', suggestion_post_list, name='suggestion-post-list'),
     path('create-suggestion-post/', create_suggestion_post, name='create-suggestion-post'),
     path('delete-suggestion-post/<int:post_id>/', delete_suggestion_post, name='delete-suggestion-post'),
+    path('delete-comment/<int:comment_id>/', delete_comment, name='delete-comment'),
+    path('comments/', comment_list, name='comments'),
+    path('edit-comment/<int:comment_id>/', edit_comment, name='edit-comment'),
 ]

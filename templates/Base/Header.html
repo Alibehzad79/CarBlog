@@ -19,7 +19,9 @@
                             <li><a href="{% url 'about:about-us' %}"> درباره ما </a></li>
                             <li><a href="{% url 'contact:contact-us' %}"> تماس با ما</a></li>
                             {% if request.user.is_authenticated %}
-                                <li><a href="{% url 'dashboard' %}"> پنل ادمین</a></li>
+                                <li><a class="text-success" href="{% url 'dashboard' %}"> پنل ادمین</a></li>
+                                {% else %}
+                                  <li><a class="text-danger" href="{% url 'dashboard' %}"> ورود</a></li>
                             {% endif %}
                         </ul>
                     </nav>

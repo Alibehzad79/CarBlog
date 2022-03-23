@@ -349,7 +349,7 @@ class CreateArticleSeo(forms.Form):
     )
 
 
-class SuggestionPostFrom(forms.Form):
+class SuggestionPostForm(forms.Form):
     post = forms.ModelChoiceField(
         queryset=Article.objects.all(),
         label='پست',
@@ -358,10 +358,30 @@ class SuggestionPostFrom(forms.Form):
     )
 
 
-class EditSuggestionPostFrom(forms.Form):
+class EditCommentForm(forms.Form):
+    STATUS = (
+        ('n', None),
+        ('a', 'قبول شود'),
+        ('r', 'رد شود'),
+    )
     post = forms.ModelChoiceField(
         queryset=Article.objects.all(),
         label='پست',
-        widget=forms.Select(attrs={'class': 'custom-select'}),
-        help_text='اگر قبلا پستی انتخاب شده، دوباره همان پست را انتخاب نکنید'
+        widget=forms.Select(attrs={'class': 'custom-select'})
     )
+    name = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        label='نام و نام خانوادگی',
+        required=True
+    )
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={'class': 'form-control'}),
+        label='ایمیل',
+        required=True
+    )
+    comment = forms.CharField(
+        widget=forms.Textarea(attrs={'class': 'form-control'}),
+        label='نظر',
+        required=True
+    )
+    status = forms.ChoiceField(choices=STATUS, label='وضعیت', widget=forms.Select(attrs={"class": 'custom-select'}),required=False, initial='n')
