@@ -18,6 +18,8 @@
 
 
 
+
+
                             {% if user.photo %}{{ user.photo.url }}{% else %}https://www.shareicon.net/data/512x512/2015/09/18/103159_user_512x512.png{% endif %}'
                          class="img-circle elevation-2" alt="User Image">
                 </div>
@@ -140,6 +142,12 @@
                                 </a>
                             </li>
                         </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'sliders' %}" class="nav-link">
+                            <i class="nav-icon fa fa-slideshare"></i>
+                            <p>اسلایدر ها</p>
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a href="{% url 'logout' %}" class="nav-link">

@@ -10,13 +10,14 @@ from pyparsing import make_xml_tags
 from accounts_app.forms import CreateNewUserForm, EditUserProfileForm, ChangeUserPasswordForm, \
     EditArticleForm, CategoryEditFrom, CreateCategoryFrom, CreateTagFrom, TagEditFrom, ArticleForm, GalleryForm, \
     EditGalleryForm, CreateSeoArticleListForm, EditSeoArticleListForm, EditArticleSeo, CreateArticleSeo, \
-    SuggestionPostForm, EditCommentForm
+    SuggestionPostForm, EditCommentForm, SliderForm
 from accounts_app.models import CustomUser
 from blog_app.models import Article, Category, Tag, ArticleGallery, SeoArticleList, Seo, SuggestionPost, ArticleComment
 from django.contrib.auth.mixins import PermissionDenied
 from django.forms import inlineformset_factory
 
 from config import settings
+from slider_app.models import Slider
 
 
 @login_required(login_url='/accounts/login?next=accounts/dashboard/')
@@ -934,5 +935,57 @@ def delete_comment(request, **kwargs):
             return redirect('comments')
         else:
             return HttpResponse('نظر مورد نظر یافت نشد')
+    else:
+        return redirect('dashboard')
+
+
+@login_required(login_url='/accounts/login?next=accounts/dashboard/')
+def sliders(request):
+    if request.user.is_superuser:
+        my_sliders = Slider.objects.all()
+        context = {
+            'sliders': my_sliders,
+        }
+        return render(request, 'dashboard/sliders.html', context)
+    else:
+        return redirect('dashboard')
+
+
+def edit_slider(request, **kwargs):
+    if request.user.is_superuser:
+        slider_id = kwargs['slider_id']
+        slider = Slider.objects.filter(id=slider_id).exists()
+        if slider:
+            slider = Slider.objects.get(id=slider_id)
+            if request.method == 'POST':
+                form = SliderForm(request.POST, request.FILES)
+                if form.is_valid():
+                    title = form.cleaned_data.get('title')
+                    image = form.cleaned_data.get('image')
+                    if image == '' or image == None:
+                        image = slider.image
+                    url = form.cleaned_data.get('url')
+                    status = form.cleaned_data.get('status')
+                    my_slider_id = form.cleaned_data.get('slider_id')
+                    my_slider = Slider.objects.get(id=my_slider_id)
+                    my_slider.title, my_slider.image, my_slider.url, my_slider.status = title, image, url, status
+                    my_slider.save()
+                    return redirect('sliders')
+            else:
+                initials = {
+                    'title': slider.title,
+                    'image': slider.image,
+                    'url': slider.url,
+                    'status': slider.status,
+                    'slider_id': slider.id,
+                }
+                form = SliderForm(initial=initials)
+            context = {
+                'form': form,
+                'slider': slider,
+            }
+            return render(request, 'dashboard/edit_sliders.html', context)
+        else:
+            return redirect('sliders')
     else:
         return redirect('dashboard')

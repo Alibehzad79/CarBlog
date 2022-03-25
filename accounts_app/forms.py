@@ -4,6 +4,7 @@ from django.utils import html
 from accounts_app.models import CustomUser
 from tinymce.widgets import TinyMCE
 from blog_app.models import Category, Tag, Article
+from slider_app.models import Slider
 
 
 class CreateNewUserForm(forms.Form):
@@ -384,4 +385,21 @@ class EditCommentForm(forms.Form):
         label='نظر',
         required=True
     )
-    status = forms.ChoiceField(choices=STATUS, label='وضعیت', widget=forms.Select(attrs={"class": 'custom-select'}),required=False, initial='n')
+    status = forms.ChoiceField(choices=STATUS, label='وضعیت', widget=forms.Select(attrs={"class": 'custom-select'}),
+                               required=False, initial='n')
+
+
+class SliderForm(forms.Form):
+    STATUS = (
+        ('u', 'منتشر نشود'),
+        ('p', 'منتشر شود'),
+    )
+    title = forms.CharField(
+        widget=TinyMCE(attrs={'required': False, 'cols': 40, 'rows': 20}),
+        label='عنوان'
+    )
+    image = forms.ImageField(required=False)
+    url = forms.URLField(widget=forms.URLInput(attrs={'class': 'form-control'}))
+    status = forms.ChoiceField(choices=STATUS, label='وضعیت', widget=forms.Select(attrs={"class": 'custom-select'}),
+                               required=False, initial='u')
+    slider_id = forms.IntegerField(widget=forms.HiddenInput())
