@@ -3,7 +3,7 @@
 -------------------------------------- <br />
 open Terminal in Linux and mac , cmd in windows
 <h5>Install python v3.10</h5>
-<h6>Install Virtualenv</h6>
+<h5>Install Virtualenv</h5>
 pip install virtualenv <br />
 mkdir CarBlog <br />
 --> virtualenv venv <br />
