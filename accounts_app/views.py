@@ -1,5 +1,8 @@
 import datetime
+import itertools
 
+from django.contrib import messages
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -10,7 +13,7 @@ from pyparsing import make_xml_tags
 from accounts_app.forms import CreateNewUserForm, EditUserProfileForm, ChangeUserPasswordForm, \
     EditArticleForm, CategoryEditFrom, CreateCategoryFrom, CreateTagFrom, TagEditFrom, ArticleForm, GalleryForm, \
     EditGalleryForm, CreateSeoArticleListForm, EditSeoArticleListForm, EditArticleSeo, CreateArticleSeo, \
-    SuggestionPostForm, EditCommentForm, SliderForm
+    SuggestionPostForm, EditCommentForm, SliderForm, LoginForm
 from accounts_app.models import CustomUser
 from blog_app.models import Article, Category, Tag, ArticleGallery, SeoArticleList, Seo, SuggestionPost, ArticleComment
 from django.contrib.auth.mixins import PermissionDenied
@@ -18,6 +21,31 @@ from django.forms import inlineformset_factory
 
 from config import settings
 from slider_app.models import Slider
+
+
+def login_view(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    if request.method == 'POST':
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            remember_me = form.cleaned_data.get('remember_me')
+            if not remember_me:
+                request.session.set_expiry(0)
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('dashboard')
+            else:
+                messages.add_message(request, messages.WARNING, 'نام کاربری یا رمز عبور اشتباه است.')
+    else:
+        form = LoginForm()
+    context = {
+        'form': form,
+    }
+    return render(request, 'registration/accounts/login.html', context)
 
 
 @login_required(login_url='/accounts/login?next=accounts/dashboard/')
@@ -257,11 +285,9 @@ def edit_user_profile(request, **kwargs):
             initials = {
                 'first_name': user.first_name,
                 'last_name': user.last_name,
-                'profile_image': user.photo,
                 'address': user.location,
                 'about_me': user.about_me,
                 'education': user.education,
-                'my_skill': [s for s in skls],
             }
             form = EditUserProfileForm(initial=initials)
         context = {
@@ -962,7 +988,7 @@ def edit_slider(request, **kwargs):
                 if form.is_valid():
                     title = form.cleaned_data.get('title')
                     image = form.cleaned_data.get('image')
-                    if image == '' or image == None:
+                    if image == '' or image is None:
                         image = slider.image
                     url = form.cleaned_data.get('url')
                     status = form.cleaned_data.get('status')

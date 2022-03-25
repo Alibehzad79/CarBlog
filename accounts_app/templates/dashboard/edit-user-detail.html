@@ -467,6 +467,7 @@
 
                                                     <div class="col-sm-10">
                                                         {{ form.my_skill }}
+                                                        <p>{{ form.my_skill.help_text }}</p>
                                                         {% if customuser.skill_set.all %}
                                                             {% for skill in customuser.skill_set.all %}
                                                                 <span class="mt-1">({{ skill.skill }})</span>

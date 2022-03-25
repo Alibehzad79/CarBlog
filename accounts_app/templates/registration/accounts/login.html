@@ -179,24 +179,28 @@
         <div class="card">
             <div class="card-body login-card-body">
                 <p class="login-box-msg">فرم زیر را تکمیل کنید و ورود بزنید</p>
+                {% for message in messages %}
+                    <p class="alert alert-danger text-center">{{ message }}</p>
+                {% endfor %}
 
                 <form action="{% url 'login' %}" method="post">
                     {% csrf_token %}
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" id="id_username" name="username" autocomplete="username"
-                               required maxlength="150" autocapitalize="none" autofocus placeholder="نام کاربری">
-                        {% for error in form.username.errors %}
-                            <p class="alert alert-danger mt-1">{{ error }}</p>
-                        {% endfor %}
-
+                        {{ form.username }}
                     </div>
                     <div class="input-group mb-3">
-                        <input type="password" class="form-control" id="id_password" name="password"
-                               autocomplete="current-password" required placeholder="رمز عبور">
-                        {% for error in form.password.errors %}
-                            <p class="alert alert-danger mt-1">{{ error }}</p>
-                        {% endfor %}
+                        {{ form.password }}
                     </div>
+                    {% for error in form.username.errors %}
+                        <p class="alert alert-danger mt-1 text-center">{{ error }}</p>
+                    {% endfor %}
+                    <div class="input-group mb-3">
+                        {{ form.remember_me }}
+                        <span class="mx-2">{{ form.remember_me.label }}</span>
+                    </div>
+                    {% for error in form.remember_me.errors %}
+                        <p class="alert alert-danger mt-1 text-center">{{ error }}</p>
+                    {% endfor %}
                     <div class="row">
                         <!-- /.col -->
                         <div class="col-4">

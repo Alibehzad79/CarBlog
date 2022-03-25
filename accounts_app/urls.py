@@ -7,7 +7,7 @@ from accounts_app.views import dashboard, UserListView, delete_user_post, AdminL
     article_gallery, gallery_list, remove_gallery, edit_article_gallery, seo_for_article_list, \
     delete_seo_for_article_list, create_seo_for_article_list, edit_seo_for_article_list, post_seo_list, \
     edit_article_seo, create_article_seo, delete_seo, suggestion_post_list, create_suggestion_post, \
-    delete_suggestion_post, comment_list, edit_comment, delete_comment, sliders, edit_slider
+    delete_suggestion_post, comment_list, edit_comment, delete_comment, sliders, edit_slider, login_view
 from django.contrib.auth import views as auth_view
 
 urlpatterns = [
@@ -20,7 +20,7 @@ urlpatterns = [
     path('dashboard/edit-user/<int:user_id>/', edit_user_profile, name='edit-user'),
     path('dashboard/add-remove-admin/<int:user_id>/', add_remove_admin, name='add-remove-admin'),
     path('dashboard/active-deactive-user/<int:user_id>/', active_de_active_user, name='active-deactive-user'),
-    path('login/', auth_view.LoginView.as_view(template_name='registration/accounts/login.html'), name='login'),
+    path('login/', login_view, name='login'),
     path('logout/', auth_view.LogoutView.as_view(template_name='registration/accounts/login.html'), name='logout'),
     path('change-password/<int:user_id>/', change_password_from_admin, name='change-password-from-admin'),
     path('edit-article/<int:post_id>/', edit_post, name='edit-article'),

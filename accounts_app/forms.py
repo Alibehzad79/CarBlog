@@ -7,6 +7,24 @@ from blog_app.models import Category, Tag, Article
 from slider_app.models import Slider
 
 
+class LoginForm(forms.Form):
+    username = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control d-block', 'placeholder': 'نام کاربری را وارد کنید'}),
+        label='نام کاربری')
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'رمز عبور خود را وارد کنید'}),
+        label='رمز عبور')
+    remember_me = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-control'}), required=False,
+                                     label='مرا به خاطر بسپار')
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if CustomUser.objects.filter(username=username).exists():
+            return username
+        else:
+            raise forms.ValidationError('نام کاربری یا رمز عبور اشتباه است')
+
+
 class CreateNewUserForm(forms.Form):
     username = forms.CharField(
         widget=forms.TextInput(
