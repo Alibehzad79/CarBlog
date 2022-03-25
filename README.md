@@ -2,7 +2,7 @@
 <h1>The Blog with django</h1>
 -------------------------------------- <br />
 open Terminal in Linux and mac , cmd in windows
-
+<h5>Install python v3.10</h5>
 <h6>Install Virtualenv</h6>
 pip install virtualenv <br />
 mkdir CarBlog <br />
