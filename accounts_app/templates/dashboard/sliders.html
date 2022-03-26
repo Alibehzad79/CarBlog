@@ -1,46 +1,82 @@
 {% extends 'dashboard/base.html' %}
+{% load crispy_forms_tags %}
 {% load static %}
 {% load crispy_forms_tags %}
 {% block head_css %}
 
 {% endblock %}
 {% block head_script %}
-
+    <script src="{% static 'tinymce/tinymce.min.js' %}" referrerpolicy="origin"></script>
 {% endblock %}
 {% block title %}
     اسلایدر ها
 {% endblock %}
 {% block content %}
-    {% if sliders %}
-        <div class="content-wrapper" style="min-height: 2809px;">
-            <!-- Content Header (Page header) -->
-            <section class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1>دسته بندی ها</h1>
-                        </div>
-                        <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-left">
-                                <li class="breadcrumb-item"><a href="/">خانه</a></li>
-                                <li class="breadcrumb-item active">اسلایدر ها</li>
-                            </ol>
-                        </div>
+    <div class="content-wrapper" style="min-height: 2809px;">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>دسته بندی ها</h1>
                     </div>
-                </div><!-- /.container-fluid -->
-            </section>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-left">
+                            <li class="breadcrumb-item"><a href="/">خانه</a></li>
+                            <li class="breadcrumb-item active">اسلایدر ها</li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
 
-            <!-- Main content -->
-            <section class="content">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">اسلایدر ها <span><a href="/accounts/create-category/new/"><button
-                                            class="btn btn-primary">ایجاد </button></a></span></h3>
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">اسلایدر ها <span><a href="" data-toggle="modal"
+                                                                           data-target="#createSlider"><button
+                                        class="btn btn-primary">ایجاد </button></a></span></h3>
+                            </div>
+                            <form action="{% url 'sliders' %}" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="modal fade" id="createSlider" style="z-index: 3001"
+                                     data-backdrop="static"
+                                     data-keyboard="false"
+                                     tabindex="-1" aria-labelledby="staticBackdrop" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="staticBackdropLabel">ایجاد اسلایدر</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">{{ form|crispy }}</div>
+                                            <div class="modal-footer text-center">
+                                                <button class="btn btn-danger mx-2" type="button"
+                                                        data-dismiss="modal">
+                                                    خروج
+                                                </button>
+                                                <button class="btn btn-success" type="submit">ذخیره</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!-- /.card-body -->
+                                    <div class="card-footer clearfix">
+                                        <ul class="pagination pagination-sm m-0 float-right">
+                                            <li class="page-item"></li>
+                                            <li class="page-item"></li>
+                                        </ul>
+                                    </div>
                                 </div>
-                                <!-- /.card-header -->
+                            </form>
+                            {% if sliders %}
                                 <div class="card-body">
                                     <table class="table table-bordered">
                                         <tbody>
@@ -54,14 +90,13 @@
                                         {% for slider in sliders %}
                                             <tr class="text-center">
                                                 <td>{{ slider.id }}</td>
-                                                <td><a data-toggle="tooltip" title="حذف  کردن"
-                                                       href=""><i
+                                                <td><a href="{% url 'delete-slider' slider.id %}"><i
                                                         class="mx-2 fa fa-remove text-danger"></i></a>
-                                                    <a data-toggle="tooltip" href="{% url 'edit-slider' slider.id %}"
-                                                       title="ویرایش"><i
-                                                            class="mx-2 fa fa-edit text-success"></i></a>
-                                                    {{ slider.title|safe|truncatechars:20 }}</td>
-                                                <td dir="ltr"><a href="{{ slider.url }}">{{ slider.url }}</a>
+                                                    {{ slider.title|safe|truncatechars:20 }}
+                                                    <a href="{% url 'edit-slider' slider.id %}"><i
+                                                            class="mx-2 fa fa-edit text-success"></i></a></td>
+                                                <td dir="ltr"><a target="_blank"
+                                                                 href="{{ slider.url }}">{{ slider.url }}</a>
                                                     {% if slider.status == 'p' %}
                                                         <td>
                                                             <p class="badge badge-success">منتشر شده</p>
@@ -76,25 +111,25 @@
                                         </tbody>
                                     </table>
                                 </div>
+                            {% else %}
+                                <p class="alert alert-warning text-center">اسلایدری یافت نشد</p>
+                            {% endif %}
 
-                                <!-- /.card-body -->
-                                <div class="card-footer clearfix">
-                                    <ul class="pagination pagination-sm m-0 float-right">
-                                        <li class="page-item"></li>
-                                        <li class="page-item"></li>
-                                    </ul>
-                                </div>
-                            </div>
+                            <!-- /.card-header -->
+
                         </div>
                     </div>
-                </div><!-- /.container-fluid -->
-            </section>
-            <!-- /.content -->
-        </div>
-    {% else %}
-        <p class="alert alert-warning">اسلایدری یافت نشد</p>
-    {% endif %}
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
 {% endblock %}
 {% block script %}
+    <script>
+        tinymce.init({
+            selector: '#id_content'
+        });
+    </script>
 
 {% endblock %}

@@ -421,3 +421,9 @@ class SliderForm(forms.Form):
     status = forms.ChoiceField(choices=STATUS, label='وضعیت', widget=forms.Select(attrs={"class": 'custom-select'}),
                                required=False, initial='u')
     slider_id = forms.IntegerField(widget=forms.HiddenInput())
+
+
+class CreateSliderFrom(forms.ModelForm):
+    class Meta:
+        model = Slider
+        fields = '__all__'

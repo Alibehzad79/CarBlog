@@ -13,7 +13,7 @@ from pyparsing import make_xml_tags
 from accounts_app.forms import CreateNewUserForm, EditUserProfileForm, ChangeUserPasswordForm, \
     EditArticleForm, CategoryEditFrom, CreateCategoryFrom, CreateTagFrom, TagEditFrom, ArticleForm, GalleryForm, \
     EditGalleryForm, CreateSeoArticleListForm, EditSeoArticleListForm, EditArticleSeo, CreateArticleSeo, \
-    SuggestionPostForm, EditCommentForm, SliderForm, LoginForm
+    SuggestionPostForm, EditCommentForm, SliderForm, LoginForm, CreateSliderFrom
 from accounts_app.models import CustomUser
 from blog_app.models import Article, Category, Tag, ArticleGallery, SeoArticleList, Seo, SuggestionPost, ArticleComment
 from django.contrib.auth.mixins import PermissionDenied
@@ -969,14 +969,23 @@ def delete_comment(request, **kwargs):
 def sliders(request):
     if request.user.is_superuser:
         my_sliders = Slider.objects.all()
+        if request.method == 'POST':
+            form = CreateSliderFrom(request.POST, request.FILES)
+            if form.is_valid():
+                form.save()
+                return redirect('sliders')
+        else:
+            form = CreateSliderFrom()
         context = {
             'sliders': my_sliders,
+            'form': form,
         }
         return render(request, 'dashboard/sliders.html', context)
     else:
         return redirect('dashboard')
 
 
+@login_required(login_url='/accounts/login?next=accounts/dashboard/')
 def edit_slider(request, **kwargs):
     if request.user.is_superuser:
         slider_id = kwargs['slider_id']
@@ -1011,6 +1020,19 @@ def edit_slider(request, **kwargs):
                 'slider': slider,
             }
             return render(request, 'dashboard/edit_sliders.html', context)
+        else:
+            return redirect('sliders')
+    else:
+        return redirect('dashboard')
+
+
+@login_required(login_url='/accounts/login?next=accounts/dashboard/')
+def delete_slider(request, **kwargs):
+    if request.user.is_superuser:
+        slider_id = kwargs['slider_id']
+        if Slider.objects.filter(id=slider_id).exists():
+            Slider.objects.get(id=slider_id).delete()
+            return redirect('sliders')
         else:
             return redirect('sliders')
     else:
