@@ -7,7 +7,8 @@ from accounts_app.views import dashboard, UserListView, delete_user_post, AdminL
     article_gallery, gallery_list, remove_gallery, edit_article_gallery, seo_for_article_list, \
     delete_seo_for_article_list, create_seo_for_article_list, edit_seo_for_article_list, post_seo_list, \
     edit_article_seo, create_article_seo, delete_seo, suggestion_post_list, create_suggestion_post, \
-    delete_suggestion_post, comment_list, edit_comment, delete_comment, sliders, edit_slider, login_view, delete_slider
+    delete_suggestion_post, comment_list, edit_comment, delete_comment, sliders, edit_slider, login_view, delete_slider, \
+    subscribe
 from django.contrib.auth import views as auth_view
 
 urlpatterns = [
@@ -58,5 +59,6 @@ urlpatterns = [
     path('sliders/', sliders, name='sliders'),
     path('sliders/edit/<int:slider_id>/', edit_slider, name='edit-slider'),
     path('delete-slider/<int:slider_id>/', delete_slider, name='delete-slider'),
+    path('subscribes/', subscribe, name='subscribes'),
 
 ]

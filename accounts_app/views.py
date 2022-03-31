@@ -21,6 +21,7 @@ from django.forms import inlineformset_factory
 
 from config import settings
 from slider_app.models import Slider
+from subscribe_app.models import Subscribe
 
 
 def login_view(request):
@@ -1035,5 +1036,17 @@ def delete_slider(request, **kwargs):
             return redirect('sliders')
         else:
             return redirect('sliders')
+    else:
+        return redirect('dashboard')
+
+
+@login_required(login_url='/accounts/login?next=accounts/dashboard/')
+def subscribe(request, **kwargs):
+    if request.user.is_superuser:
+        news_papers = Subscribe.objects.all()
+        context = {
+            'news_papers': news_papers,
+        }
+        return render(request, 'dashboard/news_papers.html', context)
     else:
         return redirect('dashboard')
