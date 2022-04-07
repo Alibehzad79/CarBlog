@@ -289,6 +289,29 @@ class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
         exclude = ['visit_count', 'date_created', 'date_update']
+        widgets = {
+            'creator': forms.Select(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'category': forms.Select(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'tag': forms.SelectMultiple(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'status': forms.Select(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+
+        }
 
 
 class GalleryForm(forms.Form):
