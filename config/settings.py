@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'tinymce',
     "crispy_forms",
     "crispy_bootstrap5",
+    'rest_framework',
     # apps
     'accounts_app.apps.AccountsAppConfig',
     'blog_app.apps.BlogAppConfig',
@@ -50,6 +51,7 @@ INSTALLED_APPS = [
     'site_settings_app.apps.SiteSettingsAppConfig',
     'slider_app.apps.SliderAppConfig',
     'subscribe_app.apps.SubscribeAppConfig',
+    'api.apps.ApiConfig',
 
 ]
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"

@@ -380,6 +380,8 @@ def edit_post(request, **kwargs):
                     'image': article.image,
                     'video_url': article.video_url,
                     'status': article.status,
+                    'category': article.category,
+                    'tag': article.tag.all()
                 }
                 form = EditArticleForm(initial=initials)
             context = {

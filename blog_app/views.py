@@ -14,7 +14,7 @@ from site_settings_app.models import Setting
 class ArticleListView(ListView):
     model = Article
     template_name = "blog/article_list.html"
-    paginate_by = 4
+    paginate_by = 10
 
     def get_queryset(self):
         return Article.objects.filter(status='p').all()
