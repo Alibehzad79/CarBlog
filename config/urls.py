@@ -28,6 +28,7 @@ urlpatterns = [
     path('contact-us/', include('contact_us_app.urls')),
     path('tinymce/', include('tinymce.urls')),
     path('api-auth/', include('rest_framework.urls')),
+    path('api/', include('api.urls')),
     path('admin/', admin.site.urls),
 
 ]
