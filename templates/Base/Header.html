@@ -18,10 +18,14 @@
                             </li>
                             <li><a href="{% url 'about:about-us' %}"> درباره ما </a></li>
                             <li><a href="{% url 'contact:contact-us' %}"> تماس با ما</a></li>
-                            {% if request.user.is_authenticated %}
+                            {% if  request.user.is_superuser %}
                                 <li><a class="text-success" href="{% url 'dashboard' %}"> پنل ادمین</a></li>
-                                {% else %}
-                                  <li><a class="text-danger" href="{% url 'dashboard' %}"> ورود</a></li>
+                                <li><a class="text-primary" href="{% url 'api:api-article-list' %}"> API</a></li>
+                                <li><a class="text-primary" href="{% url 'logout' %}"> خروج</a></li>
+                            {% elif request.user.is_authenticated %}
+                                <li><a class="text-primary" href="{% url 'logout' %}"> خروج</a></li>
+                            {% else %}
+                                <li><a class="text-danger" href="{% url 'dashboard' %}"> ورود</a></li>
                             {% endif %}
                         </ul>
                     </nav>

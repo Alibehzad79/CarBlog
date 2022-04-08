@@ -191,127 +191,137 @@
 {% endblock %}
 {% block content %}
     <div class="content-wrapper" style="min-height: 1222px;">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-10 col-md-2 mb-2">
-                <h1 class="m-0 text-dark">لیست پست ها</h1>
-            </div>
-            <div class="col-sm-10 col-md-2 mb-2">
-                <a href="{% url 'create-article' %}">
-                    <button class="btn btn-primary"> ایجاد پست جدید<i class="fa fa-plus mr-2"></i></button>
-                </a>
-            </div>
-            <div class="col-sm-2">
-                <select class="form-control float-left" onchange="location = this.value;">
-                    <option value="{% url 'article-filter' '-id' %}"
-                            {% if request.path == '/accounts/article-list/filter/-id/' %}
-                            selected
-                            {% endif %} >جدید ترین
-                    </option>
-                    <option value="{% url 'article-filter' 'id' %}"
-                            {% if request.path == '/accounts/article-list/filter/id/' %}
-                            selected
-                            {% endif %} >قدیمی ترین
-                    </option>
-                    <option value="{% url 'article-filter' '-visit_count' %}"
-                            {% if request.path == '/accounts/article-list/filter/-visit_count/' %}
-                            selected
-                            {% endif %} >پر ببننده ترین ترین
-                    </option>
-                    <option value="{% url 'article-filter' 'my-articles' %}"
-                            {% if request.path == '/accounts/article-list/filter/my-articles/' %}
-                            selected
-                            {% endif %} >پست های من
-                    </option>
-                </select>
-            </div><!-- /.col -->
-        </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
-
-    <!-- Main content -->
-    <section class="content">
-    <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
-        <div class="row">
-            <div class="container">
-                <div class="content">
-                    <div class="row">
-                        {% if request.user.is_superuser %}
-                            {% for article in article_list %}
-                                <div class="col">
-                                    <div class="weather-card rain" style="width: 100%">
-                                        <div class="top"
-                                             style='background: url("{{ article.image.url }}") no-repeat;background-size: cover;
-                                                     background-position: center center; width: 100%'>
-                                            <div class="wrapper">
-                                                <div class="mynav float-right">
-                                                    <a href="{% url 'edit-article' article.id %}"><span
-                                                            class="lnr lnr-cog bg-dark p-2 mx-1 rounded"></span></a>
-                                                </div>
-                                                <div class="float-left">
-                                                    <a href="{% url 'delete-article' article.id %}"><i
-                                                        class="fa fa-remove bg-danger p-2 mx-1 rounded"></i></a>
-                                                </div>
-                                                {% if article.status == 'u' %}
-                                                    <div class="mynav mt-2">
-                                                        <span class="bg-danger p-1 rounded">منشتر نشده</span>
-                                                    </div>
-                                                {% elif article.status == 'w' %}
-                                                    <div class="mynav mt-2">
-                                                        <span class="bg-warning p-1 rounded">درحال بررسی</span>
-                                                    </div>
-                                                {% elif article.status == 'p' %}
-                                                    <div class="mynav mt-2">
-                                                        <span class="bg-success p-1 rounded">منشتر شده</span>
-                                                    </div>
-                                                {% endif %}
-                                                <h1 class="heading bg-info rounded text-truncate"><a target="_blank"
-                                                                                       href="{% url 'blog:article_detail' article.id article.get_slug_title %}">{{ article.title }}</a>
-                                                </h1>
-                                                <h3 class="location bg-dark rounded">نویسنده:
-                                                    {% if article.creator.get_full_name %}
-                                                        {{ article.creator.get_full_name }}
-                                                    {% else %}
-                                                        {{ article.creator }}
-                                                    {% endif %} </h3>
-                                            </div>
-                                        </div>
-                                        <div class="bottom">
-                                            <div class="wrapper">
-                                                <ul class="list-inline">
-                                                    <li class="active mt-3">
-                                                        <span class="fa fa-eye"></span>
-                                                        <span>تعداد بازدید: </span>
-                                                        <span class="temp">{{ article.visit_count }}</span>
-                                                    </li>
-                                                    <li class="active mt-3">
-                                                        <span class="fa fa-comment"></span>
-                                                        <span>تعداد نظرات: </span>
-                                                        <span class="temp">{{ article.articlecomment_set.count }}</span>
-                                                    </li>
-                                                    <li class="active mt-3">
-                                                        <span class="fa fa-pencil"></span>
-                                                        <span> منتشر شده در : {{ article.date_created.year }}/{{ article.date_created.month }}/{{ article.date_created.day }} </span>
-                                                    </li>
-                                                    <li class="active mt-3">
-                                                        <span class="fa fa-edit"></span>
-                                                        <span> بروزرسانی : {{ article.date_update.year }}/{{ article.date_update.month }}/{{ article.date_update.day }} </span>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        {% endif %}
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-10 col-md-2 mb-2">
+                        <h1 class="m-0 text-dark">لیست پست ها</h1>
                     </div>
-                </div>
+                    <div class="col-sm-10 col-md-2 mb-2">
+                        <a href="{% url 'create-article' %}">
+                            <button class="btn btn-primary"> ایجاد پست جدید<i class="fa fa-plus mr-2"></i></button>
+                        </a>
+                    </div>
+                    <div class="col-sm-2">
+                        <select class="form-control float-left" onchange="location = this.value;">
+                            <option value="{% url 'article-filter' '-id' %}"
+                                    {% if request.path == '/accounts/article-list/filter/-id/' %}
+                                    selected
+                                    {% endif %} >جدید ترین
+                            </option>
+                            <option value="{% url 'article-filter' 'id' %}"
+                                    {% if request.path == '/accounts/article-list/filter/id/' %}
+                                    selected
+                                    {% endif %} >قدیمی ترین
+                            </option>
+                            <option value="{% url 'article-filter' '-visit_count' %}"
+                                    {% if request.path == '/accounts/article-list/filter/-visit_count/' %}
+                                    selected
+                                    {% endif %} >پر ببننده ترین ترین
+                            </option>
+                            <option value="{% url 'article-filter' 'my-articles' %}"
+                                    {% if request.path == '/accounts/article-list/filter/my-articles/' %}
+                                    selected
+                                    {% endif %} >پست های من
+                            </option>
+                        </select>
+                    </div><!-- /.col -->
+                </div><!-- /.container-fluid -->
             </div>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <!-- Small boxes (Stat box) -->
+                    <div class="row">
+                        <div class="container">
+                            <div class="content">
+                                <div class="row">
+                                    {% if request.user.is_superuser %}
+                                        {% for article in article_list %}
+                                            <div class="col-6">
+                                                <div class="weather-card rain" style="width: 100%">
+                                                    <div class="top"
+                                                            {% if article.image %}
+                                                         style='background: url("{{ article.image.url }}") no-repeat;background-size: cover;
+                                                                 background-position: center center; width: 100%'
+                                                            {% endif %} >
+                                                        <div class="wrapper">
+                                                            <div class="mynav float-right">
+                                                                <a href="{% url 'edit-article' article.id %}"><span
+                                                                        class="lnr lnr-cog bg-dark p-2 mx-1 rounded"></span></a>
+                                                            </div>
+                                                            <div class="float-left">
+                                                                <a href="{% url 'delete-article' article.id %}"><i
+                                                                        class="fa fa-remove bg-danger p-2 mx-1 rounded"></i></a>
+                                                            </div>
+                                                            {% if article.status == 'u' %}
+                                                                <div class="mynav mt-2">
+                                                                    <span class="bg-danger p-1 rounded">منشتر نشده</span>
+                                                                </div>
+                                                            {% elif article.status == 'w' %}
+                                                                <div class="mynav mt-2">
+                                                                    <span class="bg-warning p-1 rounded">درحال بررسی</span>
+                                                                </div>
+                                                            {% elif article.status == 'p' %}
+                                                                <div class="mynav mt-2">
+                                                                    <span class="bg-success p-1 rounded">منشتر شده</span>
+                                                                </div>
+                                                            {% endif %}
+                                                            <h1 class="heading bg-info rounded text-truncate"><a
+                                                                    target="_blank"
+                                                                    href="{% url 'blog:article_detail' article.id article.get_slug_title %}">{{ article.title }}</a>
+                                                            </h1>
+                                                            <h3 class="location bg-dark rounded">نویسنده:
+                                                                {% if article.creator.get_full_name %}
+                                                                    {{ article.creator.get_full_name }}
+                                                                {% else %}
+                                                                    {{ article.creator }}
+                                                                {% endif %} </h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class="bottom">
+                                                        <div class="wrapper">
+                                                            <ul class="list-inline">
+                                                                <li class="active mt-3">
+                                                                    <span class="fa fa-eye"></span>
+                                                                    <span>تعداد بازدید: </span>
+                                                                    <span class="temp">{{ article.visit_count }}</span>
+                                                                </li>
+                                                                <li class="active mt-3">
+                                                                    <span class="fa fa-comment"></span>
+                                                                    <span>تعداد نظرات: </span>
+                                                                    <span class="temp">{{ article.articlecomment_set.count }}</span>
+                                                                </li>
+                                                                <li class="active mt-3">
+                                                                    <span class="fa fa-pencil"></span>
+                                                                    <span> منتشر شده در : {{ article.date_created.year }}/{{ article.date_created.month }}/{{ article.date_created.day }} </span>
+                                                                </li>
+                                                                <li class="active mt-3">
+                                                                    <span class="fa fa-edit"></span>
+                                                                    <span> بروزرسانی : {{ article.date_update.year }}/{{ article.date_update.month }}/{{ article.date_update.day }} </span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+
+
+                                    {% endif %}
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+            </section>
         </div>
     </div>
+
 {% endblock %}
 {% block script %}
 

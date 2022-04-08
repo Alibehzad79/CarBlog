@@ -1,25 +1,17 @@
 import datetime
-import itertools
 
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, FormView
-from django.apps import apps
-from pyparsing import make_xml_tags
-
+from django.views.generic import ListView
 from accounts_app.forms import CreateNewUserForm, EditUserProfileForm, ChangeUserPasswordForm, \
     EditArticleForm, CategoryEditFrom, CreateCategoryFrom, CreateTagFrom, TagEditFrom, ArticleForm, GalleryForm, \
     EditGalleryForm, CreateSeoArticleListForm, EditSeoArticleListForm, EditArticleSeo, CreateArticleSeo, \
     SuggestionPostForm, EditCommentForm, SliderForm, LoginForm, CreateSliderFrom
 from accounts_app.models import CustomUser
 from blog_app.models import Article, Category, Tag, ArticleGallery, SeoArticleList, Seo, SuggestionPost, ArticleComment
-from django.contrib.auth.mixins import PermissionDenied
-from django.forms import inlineformset_factory
-
-from config import settings
 from slider_app.models import Slider
 from subscribe_app.models import Subscribe
 
@@ -51,7 +43,7 @@ def login_view(request):
 
 @login_required(login_url='/accounts/login?next=accounts/dashboard/')
 def dashboard(request):
-    if request.user.is_superuser and request.user.is_staff:
+    if request.user.is_superuser:
         userModel = CustomUser.objects.all()
         user = request.user
         user.last_login = datetime.datetime.now()
@@ -72,7 +64,7 @@ def dashboard(request):
         }
         return render(request, 'dashboard/dashboard.html', context)
     else:
-        return redirect('login')
+        return redirect('/')
 
 
 @login_required(login_url='/accounts/login?next=accounts/dashboard/')
@@ -97,7 +89,7 @@ def admin_sidebar(request):
     return render(request, 'dashboard/sidebar.html', context)
 
 
-class UserListView(ListView, PermissionDenied):
+class UserListView(ListView):
     model = CustomUser
     template_name = 'dashboard/user_list.html'
     paginate_by = 10
@@ -415,7 +407,7 @@ def delete_skill(request, **kwargs):
 class ArticleListView(ListView):
     template_name = 'dashboard/article-list.html'
     model = Article
-    paginate_by = 10
+    paginate_by = 20000000000
     login_required(login_url='/accounts/login?next=accounts/dashboard/')
 
     def get_queryset(self):

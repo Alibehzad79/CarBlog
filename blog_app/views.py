@@ -18,6 +18,7 @@ class ArticleListView(ListView):
 
     def get_queryset(self):
         return Article.objects.filter(status='p').all()
+        # return Article.objects.filter(date_created__date=datetime.datetime.today())
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(ArticleListView, self).get_context_data(**kwargs)
