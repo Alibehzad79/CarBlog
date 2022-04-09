@@ -241,7 +241,7 @@
                                 <div class="row">
                                     {% if request.user.is_superuser %}
                                         {% for article in article_list %}
-                                            <div class="col-6">
+                                            <div class="col-sm-12 col-md-6">
                                                 <div class="weather-card rain" style="width: 100%">
                                                     <div class="top"
                                                             {% if article.image %}

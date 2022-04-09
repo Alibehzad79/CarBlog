@@ -6,4 +6,4 @@ from blog_app.models import Article
 class ArticleSerializer(ModelSerializer):
     class Meta:
         model = Article
-        fields = '__all__'
+        exclude =['creator']

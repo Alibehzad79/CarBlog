@@ -9,14 +9,7 @@ from blog_app.models import Article
 
 class ArticleListApiView(ListAPIView):
     serializer_class = ArticleSerializer
-    permission_classes = [perms.IsAuthenticated]
-    pagination_class = None
-
-    def get_queryset(self):
-        if not self.request.user.is_superuser:
-            return Article.objects.filter(creator_id=self.request.user.id)
-        else:
-            return Article.objects.all()
+    queryset = Article.objects.all()
 
 
 class CreateArticleApiView(CreateAPIView, ListAPIView):
@@ -27,15 +20,13 @@ class CreateArticleApiView(CreateAPIView, ListAPIView):
 
 class ArticleDetailApiView(RetrieveAPIView):
     serializer_class = ArticleSerializer
+    permission_classes = [perms.IsAuthenticated]
 
     def get_queryset(self):
-        if self.request.user.is_authenticated:
-            if self.request.user.is_superuser:
-                return Article.objects.all()
-            else:
-                return Article.objects.filter(creator=self.request.user).all()
+        if self.request.user.is_superuser:
+            return Article.objects.all()
         else:
-            raise Http404()
+            return Article.objects.filter(creator=self.request.user).all()
 
 
 class ArticleUpdateApiView(UpdateAPIView, RetrieveAPIView):
